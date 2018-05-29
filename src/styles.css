@@ -1,1 +1,19 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'assets/bootstrap.min.css';
+
+body{
+    padding-top: 70px;
+}
+.no_padding_top_bot{
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+footer{
+    padding-top: 16px;
+    color: #fff;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    font-size: .8rem;
+}
+
