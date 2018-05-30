@@ -27,7 +27,7 @@
       <li class="nav-item" routerLinkActive="active" *ngIf=" rolUsuario == 'Administrador Lun' || rolUsuario == 'Super Administrador' && isLoggedIn == 'true'">
           <a class="nav-link" [routerLink]="['administracion-lun']">Administración LUN</a>
         </li>
-      <li class="nav-item" routerLinkActive="active" *ngIf="rolUsuario == 'Administrador Web' || rolUsuario == 'Administrador Lun' || rolUsuario == 'Super Administrador' || rolUsuario == 'Consultador Lun' && isLoggedIn == 'true'  && puedeVerReporte == 'true'">
+      <li class="nav-item" routerLinkActive="active" *ngIf="isLoggedIn == 'true'  && puedeVerReporte == 'true'">
           <a class="nav-link" [routerLink]="['reportes']">Reportes</a>
         </li>
     </ul>

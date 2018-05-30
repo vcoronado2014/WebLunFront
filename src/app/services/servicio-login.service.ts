@@ -46,7 +46,7 @@ export class ServicioLoginService{
         var fullUser = JSON.stringify(data.Datos);
         var nombreUser = data.Datos.NombreUsuario;
         var pass = data.Datos.Password;
-        var rol = data.Datos.RolUsuario;
+        var rol = data.Datos.RolesUsuarios[0];
         var ecol = data.Datos.EncoId;
         var token = data.Datos.TokenSession;
         var repo = data.Datos.VeReportes;

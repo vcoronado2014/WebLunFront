@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
+
 //Plugin
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
 import { LoadingModule } from 'ngx-loading';

@@ -5,6 +5,10 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/retry';
 import { HttpErrorResponse } from '@angular/common/http';
 
+//Componentes
+
+
+
 //Plugin
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
@@ -24,7 +28,13 @@ export class LoginComponent implements OnInit {
   loginUsuario:string;
   loginContrasena:string;
   isLogged; 
-  rol = sessionStorage.getItem("Rol");
+  rol;
+  roles = {
+    adminWeb:"Administrador Web",
+    adminLun:"Administrador Lun",
+    consultor: "Consultador Lun",
+    superAdmin: "Super Administrador"
+  }
 
   constructor( private auth: ServicioLoginService,
                private router: Router,
@@ -37,7 +47,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() { 
     
-   }
+  }
 
   IniciarSesion(){
 
@@ -53,34 +63,45 @@ export class LoginComponent implements OnInit {
       rs=> {
         this.loading = false;
         this.isLogged = rs;
+        this.rol = sessionStorage.getItem("Rol");
+        console.log(this.isLogged);
         sessionStorage.setItem('IsLogged', this.isLogged);
+        console.log(this.roles.adminWeb);
+        console.log(this.rol);
+      },
+      er => {
+        this.loading = false;
+        console.log('incorrecto' + er);
+        this.showToast('error',this.auth.mensajeError,'Error'); 
       },
       () => {
-        if(this.isLogged && this.rol == "Administrador Web" || this.rol == "Super Administrador"){
+        if(this.isLogged && this.rol == this.roles.adminWeb || this.rol.superAdmin){
           //correcto
-          console.log('Correcto');
-          this.router.navigate(['/administracion-web'])
+          console.log('Correcto administrador web');
+          this.router.navigateByUrl('/administracion-web')
           .then(data => console.log(data),
             error =>{
-          console.log(error);
+              console.log(error);
             }
           )
         }
-        else if(this.isLogged && this.rol == "Administrador Lun" || this.rol == "Super Administrador"){
-          console.log('Correcto');
-          this.router.navigate(['/administracion-lun'])
+        else if(this.isLogged && this.rol == this.roles.adminLun){
+          //correcto
+          console.log('Correcto administrador lun');
+          this.router.navigateByUrl('/administracion-lun')
           .then(data => console.log(data),
             error =>{
-          console.log(error);
+              console.log(error);
             }
           )
         }
-        else if(this.isLogged && this.rol == "Consultador Lun" || this.rol == "Super Administrador"){
-          console.log('Correcto');
-          this.router.navigate(['/reportes'])
+        else if(this.isLogged && this.rol == this.roles.consultor){
+          //correcto
+          console.log('Correcto Consultor lun');
+          this.router.navigateByUrl('/reportes')
           .then(data => console.log(data),
             error =>{
-          console.log(error);
+              console.log(error);
             }
           )
         }
@@ -88,7 +109,6 @@ export class LoginComponent implements OnInit {
           //incorrecto
           console.log('Incorrecto');
           this.showToast('error',this.auth.mensajeError,'Error');
-          this.router.navigate(['/login'])
         }
       }
     );
