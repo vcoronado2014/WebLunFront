@@ -10,28 +10,26 @@
   <div class="collapse navbar-collapse" id="navbarColor01">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item" routerLinkActive="active">
-        <a class="nav-link" [routerLink]="['home']">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" [routerLink]="['home']">Inicio<span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item dropdown" routerLinkActive="active">
-        <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administración Web</a>
+      <li class="nav-item" routerLinkActive="active" *ngIf="isLoggedIn != 'true'">
+        <a class="nav-link" [routerLink]="['login']">Login</a>
+      </li>
+     
+      <li class="nav-item dropdown" routerLinkActive="active" *ngIf="rolUsuario == 'Administrador Web' || rolUsuario == 'Super Administrador' && isLoggedIn == 'true'">
+        <a class="nav-link dropdown-toggle" [routerLink]="['administracion-web']" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administración Web</a>
         <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 42px, 0px); top: 0px; left: 0px; will-change: transform;">
-          <a class="dropdown-item"  [routerLink]="['administracion']">Crear/Modificar/Eliminar Usuarios Web</a>
+          <a class="dropdown-item"  [routerLink]="['editar']">Crear/Modificar/Eliminar Usuarios Web</a>
           <a class="dropdown-item" [routerLink]="['mantenedor']">Mantenedor entidad contratante</a>
           <a class="dropdown-item" [routerLink]="['dashboard']">Crear/Modificar/Eliminar Usuarios</a>
         </div>
       </li>
-      <li class="nav-item dropdown" routerLinkActive="active">
-        <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administración LUN</a>
-        <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 42px, 0px); top: 0px; left: 0px; will-change: transform;">
-          <a class="dropdown-item" [routerLink]="['editar']">Editar LUN</a>
-        </div>
-      </li>
-      <li class="nav-item dropdown" routerLinkActive="active">
-        <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reportes</a>
-        <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 42px, 0px); top: 0px; left: 0px; will-change: transform;">
-          <a class="dropdown-item" [routerLink]="['reportes']">Reportes</a>
-        </div>
-      </li>
+      <li class="nav-item" routerLinkActive="active" *ngIf=" rolUsuario == 'Administrador Lun' || rolUsuario == 'Super Administrador' && isLoggedIn == 'true'">
+          <a class="nav-link" [routerLink]="['administracion-lun']">Administración LUN</a>
+        </li>
+      <li class="nav-item" routerLinkActive="active" *ngIf="rolUsuario == 'Administrador Web' || rolUsuario == 'Administrador Lun' || rolUsuario == 'Super Administrador' || rolUsuario == 'Consultador Lun' && isLoggedIn == 'true'  && puedeVerReporte == 'true'">
+          <a class="nav-link" [routerLink]="['reportes']">Reportes</a>
+        </li>
     </ul>
   </div>
 </nav>

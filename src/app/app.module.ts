@@ -28,6 +28,7 @@ import { ReportesComponent } from './components/reportes/reportes.component';
 
 //Servicios
 import { ServicioLoginService } from './services/servicio-login.service';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import { ServicioLoginService } from './services/servicio-login.service';
     HomeComponent,
     MantenedorEntidadComponent,
     NavbarComponent,
-    ReportesComponent
+    ReportesComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,

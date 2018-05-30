@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
   constructor( private auth: ServicioLoginService,
                private router: Router,
                private toastr: ToastsManager,
-               private _vcr: ViewContainerRef,) { 
+               private _vcr: ViewContainerRef) { 
 
     this.toastr.setRootViewContainerRef(_vcr);
 
