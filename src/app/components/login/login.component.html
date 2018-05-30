@@ -1,19 +1,19 @@
 <div class="caja_100">
     <div class="container h-100">
-        <!-- <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading> -->
-            <div class="row h-100 justify-content-center align-items-center">
-                <div class="col-sm-6 col-md-4 col-md-offset-4">
-                    
-                    <div class="account-wall">
-                        <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120">
-                        <form class="form-signin">
-                        <input [(ngModel)]="loginUsuario"  name="loginUsuario" type="text" class="form-control" placeholder="Usuario">
-                        <input [(ngModel)]="loginContrasena"  name="loginContrasena" type="password" class="form-control" placeholder="Contraseña">
-                        <button class="btn btn-secondary btn-block" (click)="IniciarSesion()" (key.up)="IniciarSesion()">Iniciar</button>
-                        </form>
-                    </div>
-                    
+        <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+        <div class="row h-100 justify-content-center align-items-center">
+            <div class="col-sm-6 col-md-4 col-md-offset-4">
+                
+                <div class="account-wall">
+                    <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120">
+                    <form class="form-signin">
+                    <input [(ngModel)]="loginUsuario"  name="loginUsuario" type="text" class="form-control" placeholder="Usuario">
+                    <input [(ngModel)]="loginContrasena"  name="loginContrasena" type="password" class="form-control" placeholder="Contraseña">
+                    <button class="btn btn-secondary btn-block" (click)="IniciarSesion()" (key.up)="IniciarSesion()">Iniciar</button>
+                    </form>
                 </div>
+                
             </div>
+        </div>
     </div>
 </div>
