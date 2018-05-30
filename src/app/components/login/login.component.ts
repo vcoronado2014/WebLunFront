@@ -24,11 +24,12 @@ export class LoginComponent implements OnInit {
   loginUsuario:string;
   loginContrasena:string;
   isLogged; 
+  rol = sessionStorage.getItem("Rol");
 
   constructor( private auth: ServicioLoginService,
                private router: Router,
                private toastr: ToastsManager,
-               private _vcr: ViewContainerRef) { 
+               private _vcr: ViewContainerRef,) { 
 
     this.toastr.setRootViewContainerRef(_vcr);
 
@@ -55,10 +56,28 @@ export class LoginComponent implements OnInit {
         sessionStorage.setItem('IsLogged', this.isLogged);
       },
       () => {
-        if(this.isLogged){
+        if(this.isLogged && this.rol == "Administrador Web" || this.rol == "Super Administrador"){
           //correcto
           console.log('Correcto');
-          this.router.navigate(['/mantenedor'])
+          this.router.navigate(['/administracion-web'])
+          .then(data => console.log(data),
+            error =>{
+          console.log(error);
+            }
+          )
+        }
+        else if(this.isLogged && this.rol == "Administrador Lun" || this.rol == "Super Administrador"){
+          console.log('Correcto');
+          this.router.navigate(['/administracion-lun'])
+          .then(data => console.log(data),
+            error =>{
+          console.log(error);
+            }
+          )
+        }
+        else if(this.isLogged && this.rol == "Consultador Lun" || this.rol == "Super Administrador"){
+          console.log('Correcto');
+          this.router.navigate(['/reportes'])
           .then(data => console.log(data),
             error =>{
           console.log(error);
@@ -69,6 +88,7 @@ export class LoginComponent implements OnInit {
           //incorrecto
           console.log('Incorrecto');
           this.showToast('error',this.auth.mensajeError,'Error');
+          this.router.navigate(['/login'])
         }
       }
     );
