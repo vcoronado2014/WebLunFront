@@ -98,5 +98,14 @@ export class ServicioLoginService{
     return this.loggedIn;
   }
 
+  getUsersWeb(rol,ecolId,token,usuario){
+  
+    let url = environment.API_ENDPOINT + 'login?rol=' + rol + '&ecolId=' + ecolId + '&token=' + token + '&usuario=' + usuario;
+
+    let data = this.http.get(url);
+
+    return data;
+  }
+
 }
 

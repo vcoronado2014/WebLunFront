@@ -21,7 +21,6 @@
         <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 42px, 0px); top: 0px; left: 0px; will-change: transform;">
           <a class="dropdown-item"  [routerLink]="['editar']">Crear/Modificar/Eliminar Usuarios Web</a>
           <a class="dropdown-item" [routerLink]="['mantenedor']">Mantenedor entidad contratante</a>
-          <a class="dropdown-item" [routerLink]="['dashboard']">Crear/Modificar/Eliminar Usuarios</a>
         </div>
       </li>
       <li class="nav-item" routerLinkActive="active" *ngIf=" rolUsuario == 'Administrador Lun' || rolUsuario == 'Super Administrador' && isLoggedIn == 'true'">
