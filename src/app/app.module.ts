@@ -31,7 +31,6 @@ import { ReportesComponent } from './components/reportes/reportes.component';
 import { ServicioLoginService } from './services/servicio-login.service';
 
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -44,7 +43,6 @@ import { ServicioLoginService } from './services/servicio-login.service';
     MantenedorEntidadComponent,
     NavbarComponent,
     ReportesComponent
-
   ],
   imports: [
     BrowserModule,
