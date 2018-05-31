@@ -4,10 +4,6 @@
     padding-top: 70px;
 }*/
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 451d57d1b300e2e80d5011df87a74a0641a158fa
 html {
     height: 100%;
     box-sizing: border-box;
@@ -17,16 +13,6 @@ html {
 *:before,
 *:after {
     box-sizing: inherit;
-<<<<<<< HEAD
-}
-
-body {
-    position: relative;
-    margin: 0;
-    padding-top: 70px;
-    min-height: 100%;
-}
-=======
 }
 
 body {
@@ -36,7 +22,6 @@ body {
     min-height: 100%;
 }
 
->>>>>>> 451d57d1b300e2e80d5011df87a74a0641a158fa
 
 .no_padding_top_bot{
     padding-top: 0 !important;
@@ -53,8 +38,4 @@ footer{
 }
 footer p{
     margin: 0;
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 451d57d1b300e2e80d5011df87a74a0641a158fa
