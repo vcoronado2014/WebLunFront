@@ -1,0 +1,19 @@
+.body_contenedor{
+    min-height: 100%;
+    height: 100%;
+    position: relative;
+    padding: 2rem;
+}
+
+.cajas_panel{
+    padding-bottom: 4rem;
+}
+.caja_tarjeta:hover{
+    background-color: #fff1ed;
+}
+.lista_bullet:hover{
+    background-color: #fff1ed;
+}
+.foto_pendon{
+    margin: 0 auto;
+}
