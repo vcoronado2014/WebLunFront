@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormArray, FormBuilder } from '@angular/forms';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+//servicios
+import { GlobalService } from '../../services/global.service';
 
 @Component({
   selector: 'app-editar-usuarios',
@@ -18,7 +21,9 @@ export class EditarUsuariosComponent implements OnInit {
   forma:FormGroup;
 
   constructor(
-              private fb: FormBuilder
+              private fb: FormBuilder,
+              private global: GlobalService,
+              private toastr: ToastsManager,
   ) { 
     this.listaRoles = ['Administrador Web'];
     this.listaContratantes = ['Rayen','Saydex'];
@@ -72,4 +77,100 @@ export class EditarUsuariosComponent implements OnInit {
     
   }
 
+  obtenerRegiones(ecolId){
+    //indicador valor
+    this.global.postRegiones(ecolId.toString()).subscribe(
+        data => {
+          if (data){
+            var listaRegionesR = data.json();
+
+            //este arreglo habria que recorrerlo con un ngfor
+            if (listaRegionesR.Datos){
+              this.listaRegiones = listaRegionesR.Datos;
+
+
+              console.log(this.listaRegiones);
+            }
+            else{
+              //levantar un modal que hubo un error
+              this.showToast('error', 'Error al recuperar Roles', 'Roles');
+            }
+
+          }
+        },
+        err => console.error(err),
+        () => console.log('get info Regiones')
+      );
+
+  }
+
+  obtenerComunas(regId){
+    //indicador valor
+    this.global.postComunas(regId.toString()).subscribe(
+        data => {
+          if (data){
+            var listaComunasR = data.json();
+
+            //este arreglo habria que recorrerlo con un ngfor
+            if (listaComunasR.Datos){
+              this.listaComunas = listaComunasR.Datos;
+
+
+              console.log(this.listaComunas);
+            }
+            else{
+              //levantar un modal que hubo un error
+              this.showToast('error', 'Error al recuperar Roles', 'Roles');
+            }
+
+          }
+        },
+        err => console.error(err),
+        () => console.log('get info Comunas')
+      );
+
+  }
+
+  obtenerEntidadesContratantes(ecolId){
+    //indicador valor
+    this.global.postEntidadesContratantes(ecolId.toString()).subscribe(
+        data => {
+          if (data){
+            var listaEntidadesContratantesR = data.json();
+
+            //este arreglo habria que recorrerlo con un ngfor
+            if (listaEntidadesContratantesR.Datos){
+              this.listaContratantes = listaEntidadesContratantesR.Datos;
+
+
+              console.log(this.listaContratantes);
+            }
+            else{
+              //levantar un modal que hubo un error
+              this.showToast('error', 'Error al recuperar Roles', 'Roles');
+            }
+
+          }
+        },
+        err => console.error(err),
+        () => console.log('get info Contratantes')
+      );
+
+  }
+
+  showToast(tipo, mensaje, titulo){
+    if (tipo == 'success'){
+      this.toastr.success(mensaje, titulo);
+    }
+    if (tipo == 'error'){
+      this.toastr.error(mensaje, titulo);
+    }
+    if (tipo == 'info'){
+      this.toastr.info(mensaje, titulo);
+    }
+    if (tipo == 'warning'){
+      this.toastr.warning(mensaje, titulo);
+    }
+
+  }
 }

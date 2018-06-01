@@ -29,6 +29,7 @@ import { ReportesComponent } from './components/reportes/reportes.component';
 
 //Servicios
 import { ServicioLoginService } from './services/servicio-login.service';
+import { GlobalService } from './services/global.service';
 
 
 @NgModule({
@@ -56,7 +57,8 @@ import { ServicioLoginService } from './services/servicio-login.service';
     LoadingModule
   ],
   providers: [
-    ServicioLoginService
+    ServicioLoginService,
+    GlobalService
   ],
   bootstrap: [AppComponent]
 })
