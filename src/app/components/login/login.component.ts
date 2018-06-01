@@ -5,10 +5,6 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/retry';
 import { HttpErrorResponse } from '@angular/common/http';
 
-//Componentes
-
-
-
 //Plugin
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 

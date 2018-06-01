@@ -1,13 +1,15 @@
-
-<table id="tablaUserWeb">
-    <thead>
-        <th>Name</th>
-        <th>Email</th>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Satish Kumar</td>
-            <td>ramsat@gmail.com</td>
-        </tr>
-    </tbody>
-</table>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<div *ngIf="users != 0">
+    <table id="tablaUserWeb" class="display table table-hover pb-5 compact order-column" style="width:90%">
+        <tbody *ngIf="users">
+            <tr *ngFor="let p of users">
+                <td>{{p.Rut}}</td>
+                <td>{{p.NombreUsuario}}</td>
+                <td>{{p.NombreCompleto}}</td>
+                <td>{{p.NombreRegion}}</td>
+                <td>{{p.Estamento}}</td>
+                <td>{{p.RolesUsuarios[0]}}</td>
+            </tr> 
+        </tbody>
+    </table>
+</div>

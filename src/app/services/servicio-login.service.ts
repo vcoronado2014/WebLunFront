@@ -77,6 +77,9 @@ export class ServicioLoginService{
           if (data.Mensaje.Codigo == "5"){
             this.mensajeError = "Usuario Inactivo o eliminado";
           }
+          if(data.Mensaje.Codigo == "13"){
+            this.mensajeError = "Token invalido"
+          }
         }
         else
           this.mensajeError = "Error de comunicación con el servidor";          
@@ -98,12 +101,10 @@ export class ServicioLoginService{
     return this.loggedIn;
   }
 
-  getUsersWeb(rol,ecolId,token,usuario){
-  
+  getUsersWeb(rol,ecolId,token,usuario){  
+
     let url = environment.API_ENDPOINT + 'login?rol=' + rol + '&ecolId=' + ecolId + '&token=' + token + '&usuario=' + usuario;
-
-    let data = this.http.get(url);
-
+    let data = this.http.get(url).map(data => data.json());
     return data;
   }
 
