@@ -118,6 +118,7 @@ export class EditarUsuariosComponent implements OnInit {
                   "sSortDescending": ": Activar para ordenar la columna de manera descendente"
               }
             },
+            "lengthMenu": [ 10, 15, 20, 50, 100, "All"],
             "searching": false,
             "info": false,
             select: true,
