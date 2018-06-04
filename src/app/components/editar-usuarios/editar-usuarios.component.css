@@ -1,0 +1,9 @@
+.modal-header{
+    border-bottom: none;
+    background-color: #78C2AD !important;
+    color: #fff;
+}
+label{
+    font-size: .8rem;
+    margin-bottom: .2rem;
+}

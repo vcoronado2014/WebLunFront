@@ -1,7 +1,7 @@
 import { Injectable, Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Http, Headers, Response } from '@angular/http';
-import { environment } from '../../environments/environment'
+import { environment } from '../../environments/environment';
 
 import 'rxjs/add/operator/map';
 
