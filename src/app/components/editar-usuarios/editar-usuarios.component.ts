@@ -77,59 +77,54 @@ export class EditarUsuariosComponent implements OnInit {
 
   ngOnInit() {
    this.LoadTable();
-    setTimeout(function(){ 
-      this.loading = true;      
-      $(function(){
-        var table = $('#tablaUserWeb').DataTable({
-          columns: [
-              { title: "Run" },
-              { title: "Nombre Usuario" },
-              { title: "Nombre Completo" },
-              { title: "Región" },
-              { title: "Estamento" },
-              { title: "Rol" }
-          ],
-          "language": {
-            "sProcessing":     "Procesando...",
-            "sLengthMenu":     "Mostrar _MENU_ registros",
-            "sZeroRecords":    "No se encontraron resultados",
-            "sEmptyTable":     "Ningún dato disponible en esta tabla",
-            "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-            "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
-            "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
-            "sInfoPostFix":    "",
-            "sSearch":         "Buscar:",
-            "sUrl":            "",
-            "sInfoThousands":  ",",
-            "sLoadingRecords": "Cargando...",
-            "oPaginate": {
-                "sFirst":    "Primero",
-                "sLast":     "Último",
-                "sNext":     "Siguiente",
-                "sPrevious": "Anterior"
-            },
-            "oAria": {
-                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
-                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-            }
-          },
-          "searching": false,
-          "info": false,
-          select: true,
-          "dom": 'lrtip',
-          colReorder: true,
-        });
-        this.loading = false;  
-      });
-      
-    }, 8000);
  }
 
   LoadTable(){
     this.loading = true; 
     this.auth.getUsersWeb(rol,String(ecolId),token,usuario).subscribe(
       data => {
-        this.users = data.Datos;
+        this.users = data.Datos; 
+        $(function(){
+          var table = $('#tablaUserWeb').DataTable({
+            columns: [
+                { title: "Run" },
+                { title: "Nombre Usuario" },
+                { title: "Nombre Completo" },
+                { title: "Región" },
+                { title: "Estamento" },
+                { title: "Rol" }
+            ],
+            "language": {
+              "sProcessing":     "Procesando...",
+              "sLengthMenu":     "Mostrar _MENU_ registros",
+              "sZeroRecords":    "No se encontraron resultados",
+              "sEmptyTable":     "Ningún dato disponible en esta tabla",
+              "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+              "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+              "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+              "sInfoPostFix":    "",
+              "sSearch":         "Buscar:",
+              "sUrl":            "",
+              "sInfoThousands":  ",",
+              "sLoadingRecords": "Cargando...",
+              "oPaginate": {
+                  "sFirst":    "Primero",
+                  "sLast":     "Último",
+                  "sNext":     "Siguiente",
+                  "sPrevious": "Anterior"
+              },
+              "oAria": {
+                  "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                  "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+              }
+            },
+            "searching": false,
+            "info": false,
+            select: true,
+            responsive: true,
+            colReorder: true,
+          });
+        });       
         console.log(this.users);
         this.loading = false;
       }
@@ -231,6 +226,61 @@ export class EditarUsuariosComponent implements OnInit {
       );
 
   }
+  createModifyUser(
+    esNuevo,
+    nombreUsuario,
+    email,
+    password,
+    rol,
+    ecolId,
+    apellidoPaterno,
+    direccion,
+    idRegion,
+    idComuna,
+    nombres,
+    rut,
+    estamento,
+    contratante,
+    veReportes,
+    restoDireccion,
+    usuarioCreador,
+    telefonoCelular,
+    telefonoFijo
+  ){
+    this.auth.createModifyWebUser(
+      esNuevo,
+      nombreUsuario,
+      email,
+      password,
+      rol,
+      ecolId,
+      apellidoPaterno,
+      direccion,
+      idRegion,
+      idComuna,
+      nombres,
+      rut,
+      estamento,
+      contratante,
+      veReportes,
+      restoDireccion,
+      usuarioCreador,
+      telefonoCelular,
+      telefonoFijo
+    ).subscribe(
+      data => {
+        
+        if (data){
+          var usuarioCambiado = data.json();
+        }
+      },
+      err => {
+        console.error(err);
+        },
+      () => console.log('creado con exito')
+    );
+  }
+
 
   showToast(tipo, mensaje, titulo){
     if (tipo == 'success'){
