@@ -106,6 +106,56 @@ export class ServicioLoginService{
 
     return data;
   }
+  createModifyWebUser(
+    esNuevo,
+    nombreUsuario,
+    email,
+    password,
+    rol,
+    ecolId,
+    apellidoPaterno,
+    direccion,
+    idRegion,
+    idComuna,
+    nombres,
+    rut,
+    estamento,
+    contratante,
+    veReportes,
+    restoDireccion,
+    usuarioCreador,
+    telefonoCelular,
+    telefonoFijo
+  ){
+    let url = environment.API_ENDPOINT + 'Login';
+
+   let dataGet = {
+    EsNuevo: esNuevo,
+    NombreUsuario: nombreUsuario,
+    Email: email,
+    Password: password,
+    Rol: rol,
+    EcolId: ecolId,
+    ApellidoPaterno: apellidoPaterno,
+    Direccion: direccion,
+    IdRegion: idRegion,
+    IdComuna: idComuna,
+    Nombres: nombres,
+    Rut: rut,
+    Estamento: estamento,
+    Contratante: contratante,
+    VeReportes: veReportes,
+    RestoDireccion:restoDireccion,
+    UsuarioCreador: nombreUsuario,
+    TelefonoCelular: telefonoCelular,
+    TelefonoFijo: telefonoFijo
+  };
+
+    let data = this.http.put(url, dataGet, {
+      headers: new Headers({'Content-Type': 'application/json'})
+    });
+    return data;
+  }
 
 }
 
