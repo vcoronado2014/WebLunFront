@@ -79,11 +79,7 @@ export class EditarUsuariosComponent implements OnInit {
    this.LoadTable();
     setTimeout(function(){ 
       this.loading = true;      
-      $(function(){   
-        $('#tablaUserWeb tfoot th').each( function () {
-          var title = $(this).text();
-          $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
-        });     
+      $(function(){
         var table = $('#tablaUserWeb').DataTable({
           columns: [
               { title: "Run" },
@@ -93,10 +89,7 @@ export class EditarUsuariosComponent implements OnInit {
               { title: "Estamento" },
               { title: "Rol" }
           ],
-          "searching": false,
-          "info": false,
-          "dom": 'lrtip',
-          "languaje": {
+          "language": {
             "sProcessing":     "Procesando...",
             "sLengthMenu":     "Mostrar _MENU_ registros",
             "sZeroRecords":    "No se encontraron resultados",
@@ -120,10 +113,15 @@ export class EditarUsuariosComponent implements OnInit {
                 "sSortDescending": ": Activar para ordenar la columna de manera descendente"
             }
           },
+          "searching": false,
+          "info": false,
+          select: true,
+          "dom": 'lrtip',
           colReorder: true,
         });
+        this.loading = false;  
       });
-      this.loading = false;
+      
     }, 8000);
  }
 

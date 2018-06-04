@@ -64,5 +64,22 @@ footer p{
     border: transparent !important;
     border-radius: 2px;
     margin-bottom: 30px;
+    margin-top: 3px;
 }
-/* End pagination */
+/* Show register */
+.dataTables_length label {
+    display: inline-flex !important;
+    margin-bottom: 0.5rem;
+    margin-top: 5px !important;
+}
+/* DataTable */
+table.dataTable {
+    width: 100%;
+    margin: 0 auto;
+    clear: both;
+    border-collapse: collapse !important;
+    border-spacing: 0;
+}
+table.dataTable.no-footer {
+    border-bottom: none;
+}
