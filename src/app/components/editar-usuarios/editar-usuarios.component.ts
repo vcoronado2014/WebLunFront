@@ -77,10 +77,14 @@ export class EditarUsuariosComponent implements OnInit {
 
   ngOnInit() {
    this.LoadTable();
-    setTimeout(function(){       
-      $(function(){
-        this.loading = true;
-        var table = $('#tablaUserWeb').DataTable( {
+    setTimeout(function(){ 
+      this.loading = true;      
+      $(function(){   
+        $('#tablaUserWeb tfoot th').each( function () {
+          var title = $(this).text();
+          $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+        });     
+        var table = $('#tablaUserWeb').DataTable({
           columns: [
               { title: "Run" },
               { title: "Nombre Usuario" },
@@ -89,7 +93,10 @@ export class EditarUsuariosComponent implements OnInit {
               { title: "Estamento" },
               { title: "Rol" }
           ],
-          languaje: {
+          "searching": false,
+          "info": false,
+          "dom": 'lrtip',
+          "languaje": {
             "sProcessing":     "Procesando...",
             "sLengthMenu":     "Mostrar _MENU_ registros",
             "sZeroRecords":    "No se encontraron resultados",
@@ -116,11 +123,9 @@ export class EditarUsuariosComponent implements OnInit {
           colReorder: true,
         });
       });
-    }, 9000);
-    this.loading = false;  
+      this.loading = false;
+    }, 8000);
  }
-
-
 
   LoadTable(){
     this.loading = true; 
@@ -131,8 +136,9 @@ export class EditarUsuariosComponent implements OnInit {
         this.loading = false;
       }
     );
-  };
- modalCrearUsuario(){
+  }
+
+  modalCrearUsuario(){
     this.tipoDeAccion = 'Crear';
     this.forma.reset({});
   }

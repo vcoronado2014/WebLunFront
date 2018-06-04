@@ -1,164 +1,162 @@
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<div *ngIf="users != 0">
-    <table id="tablaUserWeb" class="display table table-hover pb-5 compact order-column" style="width:90%">
-        <tbody *ngIf="users">
-            <tr *ngFor="let p of users">
-                <td>{{p.Rut}}</td>
-                <td>{{p.NombreUsuario}}</td>
-                <td>{{p.NombreCompleto}}</td>
-                <td>{{p.NombreRegion}}</td>
-                <td>{{p.Estamento}}</td>
-                <td>{{p.RolesUsuarios[0]}}</td>
-            </tr> 
-        </tbody>
-    </table>
-</div>
-
-<div class="container mt-4"> 
-        <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '12px' }"></ngx-loading>
-        <div class="row ">
-          <div class="col">
-            <div class="form-inline justify-content-between">
-                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalCrearUsuario" (click)="modalCrearUsuario()"><i class="fas fa-user-plus"></i> Crear Usuario</button>
-            </div>
-          </div>
+<div class="container mt-4">
+  <div class="row ">
+      <div class="col">
+        <div class="form-inline justify-content-between">
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalCrearUsuario" (click)="modalCrearUsuario()"><i class="fas fa-user-plus"></i> Crear Usuario</button>
         </div>
-      
-        <!-- Modal Crear Usuario-->
-        <div class="modal fade bd-example-modal-lg" id="modalCrearUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <!-- header -->
-              <div class="modal-header">
-                <h5 class="modal-title text-white" id="exampleModalLabel">{{tipoDeAccion}} Usuario</h5>
-                <button type="button" class="close cerrar_modal" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
+      </div>
+  </div>
+  <div *ngIf="users != 0">
+      <table id="tablaUserWeb" class="display table table-hover pb-5 compact order-column" style="width:100%">
+          <tbody *ngIf="users">
+              <tr *ngFor="let p of users">
+                  <td>{{p.Rut}}</td>
+                  <td>{{p.NombreUsuario}}</td>
+                  <td>{{p.NombreCompleto}}</td>
+                  <td>{{p.NombreRegion}}</td>
+                  <td>{{p.Estamento}}</td>
+                  <td>{{p.RolesUsuarios[0]}}</td>
+              </tr> 
+          </tbody>
+      </table>
+  </div>
+<!-- Modal Crear Usuario-->
+  <div class="modal fade bd-example-modal-lg" id="modalCrearUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <h5 class="modal-title text-white" id="exampleModalLabel">{{tipoDeAccion}} Usuario</h5>
+          <button type="button" class="close cerrar_modal" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <!-- body  -->
+        <div class="modal-body">
+
+          <div class="col-md-12 ">
+            <form [formGroup]="forma" (ngSubmit)="guardarUsuario()">
+              <div class="form-row mb-2">
+                  <div class="input-group-sm col-md-6">
+                      <label for="inputRun">RUN</label>
+                      <input type="text" class="form-control" id="inputRun" formatRut name="rut" maxlength="9" placeholder="RUN" formControlName="nuevoUsuarioRun">
+                  </div>
+                  <div class="input-group-sm col-md-6">
+                      <label for="inputNombreUsuario">Nombre de usuario</label>
+                      <input type="text" class="form-control" id="inputNombreUsuario" placeholder="Usuario" formControlName="nuevoUsuario">
+                  </div>
               </div>
-              <!-- body  -->
-              <div class="modal-body">
-      
-                <div class="col-md-12 ">
-                  <form [formGroup]="forma" (ngSubmit)="guardarUsuario()">
-                    <div class="form-row mb-2">
-                        <div class="input-group-sm col-md-6">
-                            <label for="inputRun">RUN</label>
-                            <input type="text" class="form-control" id="inputRun" formatRut name="rut" maxlength="9" placeholder="RUN" formControlName="nuevoUsuarioRun">
-                        </div>
-                        <div class="input-group-sm col-md-6">
-                            <label for="inputNombreUsuario">Nombre de usuario</label>
-                            <input type="text" class="form-control" id="inputNombreUsuario" placeholder="Usuario" formControlName="nuevoUsuario">
-                        </div>
-                    </div>
 
-                    <div class="form-row mb-2">
-                        <div class="input-group-sm col-md-7">
-                            <label for="inputEntidad">Entidad contratante</label>
-                            <select class="custom-select" class="form-control" id="inputEntidad" formControlName="nuevoUsuarioEntidad">
-                            <option  *ngFor="let v of listaContratantes;" [value]="v">{{v}}</option>
-                            </select>
-                        </div>
-                        <div class="input-group-sm col-md-5">
-                            <label for="inputRol">Rol del usuario</label>
-                            <select class="custom-select" class="form-control" id="inputRol" formControlName="nuevoUsuarioRol">
-                            <option  *ngFor="let r of listaRoles;" [value]="r">{{r}}</option>
-                            </select>
-                        </div>
-                    </div>
+              <div class="form-row mb-2">
+                  <div class="input-group-sm col-md-7">
+                      <label for="inputEntidad">Entidad contratante</label>
+                      <select class="custom-select" class="form-control" id="inputEntidad" formControlName="nuevoUsuarioEntidad">
+                      <option  *ngFor="let v of listaContratantes;" [value]="v">{{v}}</option>
+                      </select>
+                  </div>
+                  <div class="input-group-sm col-md-5">
+                      <label for="inputRol">Rol del usuario</label>
+                      <select class="custom-select" class="form-control" id="inputRol" formControlName="nuevoUsuarioRol">
+                      <option  *ngFor="let r of listaRoles;" [value]="r">{{r}}</option>
+                      </select>
+                  </div>
+              </div>
 
-                    <div class="form-row mb-2">
-                      <div class="input-group-sm col-md-4">
-                        <label for="inputNombre">Nombre</label>
-                        <input  type="text" class="form-control" id="inputNombre" placeholder="Nombre" formControlName="nuevoUsuarioNombre">
-                      </div>
-                      <div class="input-group-sm col-md-4">
-                        <label for="inputApellidoPaterno">Apellido paterno</label>
-                        <input  type="text" class="form-control" id="inputApellidoPaterno" placeholder="Apellido paterno" formControlName="nuevoUsuarioApellidoPat">
-                      </div>
-                      <div class="input-group-sm col-md-4">
-                        <label for="inputApellidoMaterno">Apellido materno (opcional)</label>
-                        <input type="text" class="form-control" id="inputApellidoMaterno" placeholder="Apellido materno" formControlName="nuevoUsuarioApellidoMat">
-                      </div>
-                    </div>
-                
-                    <div class="form-row mb-2">
-                        <div class="input-group-sm col-md-6">
-                            <label for="inputRegion1">Región</label>
-                            <select class="custom-select" class="form-control" id="inputRegion1" formControlName="nuevoUsuarioRegion">
-                            <option  *ngFor="let v of listaRegiones;" [value]="v">{{v}}</option>
-                            </select>
-                        </div>
-                        <div class="input-group-sm col-md-6">
-                            <label for="inputComuna">Comuna</label>
-                            <select class="custom-select" class="form-control" id="inputComuna" formControlName="nuevoUsuarioComumna">
-                            <option  *ngFor="let r of listaComunas;" [value]="r">{{r}}</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-row mb-2">
-                            <div class="input-group-sm col-md-6">
-                                <label for="inputDireccion">Nombre Vía</label>
-                                <input type="text" class="form-control" id="inputDireccion" placeholder="Nombre vía" formControlName="nuevoUsuarioDireccion">
-                            </div>
-                            <div class="input-group-sm col-md-6">
-                                <label for="inputRestoDireccion">Resto dirección</label>
-                                <input type="text" class="form-control" id="inputRestoDireccion" placeholder="Resto de la dirección" formControlName="nuevoUsuarioRestoDireccion">
-                            </div>
-                        </div>
-            
-                    <div class="form-row mb-2">
-                      <div class="input-group-sm col-md-6">
-                        <label for="telefono1">Teléfono Fijo (opcional)</label>
-                        <input type="tel" class="form-control" id="telefono1" placeholder="Teléfono fijo" maxlength="9" formControlName="nuevoUsuarioTelefonoFijo">
-                      </div>
-                      <div class="input-group-sm col-md-6">
-                        <label for="telefono2">Teléfono Celular</label>
-                        <input type="tel" class="form-control" id="telefono2" placeholder="Teléfono celular" maxlength="9" formControlName="nuevoUsuarioTelefonoCelular">
-                      </div>
-                    </div>
-                    <div class="form-row mb-2">
-                        <div class="input-group-sm col-md-6">
-                            <label for="inputEmail">Correo electrónico*</label>
-                            <input type="email" class="form-control" id="inputEmail" placeholder="ejemplo@email.com" formControlName="nuevoUsuarioCorreo">
-                        </div>
-                        <div class="input-group-sm col-md-6">
-                            <label for="inputEstamento">Estamento*</label>
-                            <select class="custom-select" class="form-control" id="inputEstamento" formControlName="nuevoUsuarioEstamento">
-                            <option  *ngFor="let r of listaEstamentos;" [value]="r">{{r}}</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="text-center alert-success p-1" *ngIf="tipoDeAccion == 'Editar'">
-                      Si no desea cambiar la contraseña del usuario deje estos campos vacios.
-                    </div>
-
-                    <div class="form-row mb-2">
-                      <div class="input-group-sm col-md-6">
-                        <label for="contrasena1">Contraseña<span *ngIf="tipoDeAccion == 'Crear'">*</span></label> 
-                        <input type="password" class="form-control" id="contrasena1" placeholder="Contraseña" formControlName="nuevoUsuarioContrasena1">
-                      </div>
-                      <div class="input-group-sm col-md-6">
-                        <label for="contrasena2">Repita la contraseña<span *ngIf="tipoDeAccion == 'Crear'">*</span></label>
-                        <input type="password" class="form-control" id="contrasena2" placeholder="Repetir contraseña" formControlName="nuevoUsuarioContrasena2">
-                      </div>
-                    </div>
-      
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
-                      <div *ngIf="forma.valid">
-                        <button type="submit" class="btn btn-block btn_danger">Guardar</button>
-                      </div>
-                      <div *ngIf="!forma.valid">
-                        <button type="submit" class="btn btn-block btn_danger disabled ">Guardar</button>
-                      </div>
-                    </div>
-                    
-                  </form>
+              <div class="form-row mb-2">
+                <div class="input-group-sm col-md-4">
+                  <label for="inputNombre">Nombre</label>
+                  <input  type="text" class="form-control" id="inputNombre" placeholder="Nombre" formControlName="nuevoUsuarioNombre">
+                </div>
+                <div class="input-group-sm col-md-4">
+                  <label for="inputApellidoPaterno">Apellido paterno</label>
+                  <input  type="text" class="form-control" id="inputApellidoPaterno" placeholder="Apellido paterno" formControlName="nuevoUsuarioApellidoPat">
+                </div>
+                <div class="input-group-sm col-md-4">
+                  <label for="inputApellidoMaterno">Apellido materno (opcional)</label>
+                  <input type="text" class="form-control" id="inputApellidoMaterno" placeholder="Apellido materno" formControlName="nuevoUsuarioApellidoMat">
                 </div>
               </div>
-            </div>
+          
+              <div class="form-row mb-2">
+                  <div class="input-group-sm col-md-6">
+                      <label for="inputRegion1">Región</label>
+                      <select class="custom-select" class="form-control" id="inputRegion1" formControlName="nuevoUsuarioRegion">
+                      <option  *ngFor="let v of listaRegiones;" [value]="v">{{v}}</option>
+                      </select>
+                  </div>
+                  <div class="input-group-sm col-md-6">
+                      <label for="inputComuna">Comuna</label>
+                      <select class="custom-select" class="form-control" id="inputComuna" formControlName="nuevoUsuarioComumna">
+                      <option  *ngFor="let r of listaComunas;" [value]="r">{{r}}</option>
+                      </select>
+                  </div>
+              </div>
+
+              <div class="form-row mb-2">
+                      <div class="input-group-sm col-md-6">
+                          <label for="inputDireccion">Nombre Vía</label>
+                          <input type="text" class="form-control" id="inputDireccion" placeholder="Nombre vía" formControlName="nuevoUsuarioDireccion">
+                      </div>
+                      <div class="input-group-sm col-md-6">
+                          <label for="inputRestoDireccion">Resto dirección</label>
+                          <input type="text" class="form-control" id="inputRestoDireccion" placeholder="Resto de la dirección" formControlName="nuevoUsuarioRestoDireccion">
+                      </div>
+                  </div>
+      
+              <div class="form-row mb-2">
+                <div class="input-group-sm col-md-6">
+                  <label for="telefono1">Teléfono Fijo (opcional)</label>
+                  <input type="tel" class="form-control" id="telefono1" placeholder="Teléfono fijo" maxlength="9" formControlName="nuevoUsuarioTelefonoFijo">
+                </div>
+                <div class="input-group-sm col-md-6">
+                  <label for="telefono2">Teléfono Celular</label>
+                  <input type="tel" class="form-control" id="telefono2" placeholder="Teléfono celular" maxlength="9" formControlName="nuevoUsuarioTelefonoCelular">
+                </div>
+              </div>
+              <div class="form-row mb-2">
+                  <div class="input-group-sm col-md-6">
+                      <label for="inputEmail">Correo electrónico*</label>
+                      <input type="email" class="form-control" id="inputEmail" placeholder="ejemplo@email.com" formControlName="nuevoUsuarioCorreo">
+                  </div>
+                  <div class="input-group-sm col-md-6">
+                      <label for="inputEstamento">Estamento*</label>
+                      <select class="custom-select" class="form-control" id="inputEstamento" formControlName="nuevoUsuarioEstamento">
+                      <option  *ngFor="let r of listaEstamentos;" [value]="r">{{r}}</option>
+                      </select>
+                  </div>
+              </div>
+              
+              <div class="text-center alert-success p-1" *ngIf="tipoDeAccion == 'Editar'">
+                Si no desea cambiar la contraseña del usuario deje estos campos vacios.
+              </div>
+
+              <div class="form-row mb-2">
+                <div class="input-group-sm col-md-6">
+                  <label for="contrasena1">Contraseña<span *ngIf="tipoDeAccion == 'Crear'">*</span></label> 
+                  <input type="password" class="form-control" id="contrasena1" placeholder="Contraseña" formControlName="nuevoUsuarioContrasena1">
+                </div>
+                <div class="input-group-sm col-md-6">
+                  <label for="contrasena2">Repita la contraseña<span *ngIf="tipoDeAccion == 'Crear'">*</span></label>
+                  <input type="password" class="form-control" id="contrasena2" placeholder="Repetir contraseña" formControlName="nuevoUsuarioContrasena2">
+                </div>
+              </div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                <div *ngIf="forma.valid">
+                  <button type="submit" class="btn btn-block btn_danger">Guardar</button>
+                </div>
+                <div *ngIf="!forma.valid">
+                  <button type="submit" class="btn btn-block btn_danger disabled ">Guardar</button>
+                </div>
+              </div>
+              
+            </form>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
 </div>
+
