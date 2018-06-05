@@ -17,6 +17,11 @@
                   <td>{{p.NombreRegion}}</td>
                   <td>{{p.Estamento}}</td>
                   <td>{{p.RolesUsuarios[0]}}</td>
+                  <td>
+                    <i class="fas fa-edit fa-lg iconos_editar" data-toggle="modal" data-target="#modalCrearUsuario" data-placement="bottom" title="Editar usuario" (click)="editarUsuario(usuario)"></i>
+                    <i class="fas fa-eye fa-lg iconos_editar"  data-toggle="modal" data-placement="bottom" title="Ver usuario" (click)="viewUser(usuario)"></i>
+                    <i class="far fa-trash-alt fa-lg iconos_editar" data-toggle="modal" data-placement="bottom" (click)="deleteUser(usuario)" title="Eliminar usuario"></i>
+                  </td>
               </tr> 
           </tbody>
       </table>
@@ -39,27 +44,31 @@
             <form [formGroup]="forma" (ngSubmit)="guardarUsuario()">
               <div class="form-row mb-2">
                   <div class="input-group-sm col-md-6">
-                      <label for="inputRun">RUN</label>
-                      <input type="text" class="form-control" id="inputRun" formatRut name="rut" maxlength="9" placeholder="RUN" formControlName="nuevoUsuarioRun">
-                  </div>
-                  <div class="input-group-sm col-md-6">
                       <label for="inputNombreUsuario">Nombre de usuario</label>
                       <input type="text" class="form-control" id="inputNombreUsuario" placeholder="Usuario" formControlName="nuevoUsuario">
                   </div>
+                  <div class="input-group-sm col-md-6">
+                    <label for="inputRun">RUN</label>
+                    <input type="text" class="form-control" id="inputRun" formatRut name="rut" maxlength="9" placeholder="RUN" formControlName="nuevoUsuarioRun">
+                </div>
               </div>
 
               <div class="form-row mb-2">
-                  <div class="input-group-sm col-md-7">
+                  <div class="input-group-sm col-md-5">
                       <label for="inputEntidad">Entidad contratante</label>
                       <select class="custom-select" class="form-control" id="inputEntidad" formControlName="nuevoUsuarioEntidad">
-                      <option  *ngFor="let v of listaContratantes;" [value]="v">{{v}}</option>
+                      <option  *ngFor="let v of listaContratantes;" [value]="v.Id">{{v.RazonSocial}}</option>
                       </select>
                   </div>
-                  <div class="input-group-sm col-md-5">
+                  <div class="input-group-sm col-md-4">
                       <label for="inputRol">Rol del usuario</label>
                       <select class="custom-select" class="form-control" id="inputRol" formControlName="nuevoUsuarioRol">
                       <option  *ngFor="let r of listaRoles;" [value]="r">{{r}}</option>
                       </select>
+                  </div>
+                  <div class="form-check-sm col-md-3">
+                      <input class="form-check-input" type="checkbox" id="inputReporte" formControlName="nuevoVerReporte">
+                      <label class="form-check-label" for="inputReporte">Ver reportes</label>
                   </div>
               </div>
 
@@ -81,14 +90,14 @@
               <div class="form-row mb-2">
                   <div class="input-group-sm col-md-6">
                       <label for="inputRegion1">Región</label>
-                      <select class="custom-select" class="form-control" id="inputRegion1" formControlName="nuevoUsuarioRegion">
-                      <option  *ngFor="let v of listaRegiones;" [value]="v">{{v}}</option>
+                      <select (change)="onChangeRegion($event)" class="custom-select" class="form-control" id="inputRegion1" formControlName="nuevoUsuarioRegion">
+                      <option  *ngFor="let v of listaRegiones;" [value]="v.Id">{{v.Nombre}}</option>
                       </select>
                   </div>
                   <div class="input-group-sm col-md-6">
                       <label for="inputComuna">Comuna</label>
-                      <select class="custom-select" class="form-control" id="inputComuna" formControlName="nuevoUsuarioComumna">
-                      <option  *ngFor="let r of listaComunas;" [value]="r">{{r}}</option>
+                      <select class="custom-select" class="form-control" id="inputComuna" formControlName="nuevoUsuarioComuna">
+                      <option  *ngFor="let r of listaComunas;" [value]="r.Id">{{r.Nombre}}</option>
                       </select>
                   </div>
               </div>

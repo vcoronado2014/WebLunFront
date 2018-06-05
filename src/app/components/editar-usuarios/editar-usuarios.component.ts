@@ -35,48 +35,55 @@ export class EditarUsuariosComponent implements OnInit {
  tipoDeAccion:string;
   //formulario
  forma:FormGroup;
+  //usuario editado
+  usuarioEditado;
 
   constructor( private auth: ServicioLoginService,
                private fb: FormBuilder,
                private global: GlobalService,
+               private _vcr: ViewContainerRef,
                private toastr: ToastsManager ){
 
-    this.listaRoles = ['Administrador Web'];
-    this.listaContratantes = ['Rayen','Saydex'];
-    this.listaRegiones = ['Valparaíso','Tarapacá'];
-    this.listaComunas = ['Ñuñoa','San Joaquín'];
+    this.toastr.setRootViewContainerRef(_vcr);
+    if (rol != 'Super Administrador'){
+      this.listaRoles = ['Administrador Web', 'Administrador Lun', 'Consultador'];
+    }
+    else{
+      this.listaRoles = ['Administrador Web', 'Administrador Lun', 'Consultador', 'Super Administrador'];
+    }
+    this.listaContratantes = [];
+    this.listaRegiones = [];
+    this.listaComunas = [];
     this.listaEstamentos = ['Profesional','Técnico'];
 
     this.forma = new FormGroup({
-      'nuevoUsuario': new FormControl('', [Validators.required,
-                                          Validators.minLength(3)]),
+      'nuevoUsuario': new FormControl('', [Validators.required,Validators.minLength(3)]),
       'nuevoUsuarioRun': new FormControl(),
-      'nuevoUsuarioNombre': new FormControl('', [Validators.required,
-                                                  Validators.minLength(3)]),
-      'nuevoUsuarioApellidoPat': new FormControl('', [Validators.required,
-                                                      Validators.minLength(3)]),
+      'nuevoUsuarioNombre': new FormControl('', [Validators.required, Validators.minLength(3)]),
+      'nuevoUsuarioApellidoPat': new FormControl('', [Validators.required, Validators.minLength(3)]),
       'nuevoUsuarioApellidoMat': new FormControl(),
       'nuevoUsuarioRegion': new FormControl('', Validators.required),
-      'nuevoUsuarioComumna': new FormControl('', Validators.required),
-      'nuevoUsuarioDireccion': new FormControl('', [Validators.required,
-                                                    Validators.minLength(3)]),
+      'nuevoUsuarioComuna': new FormControl('', Validators.required),
+      'nuevoUsuarioDireccion': new FormControl('', [Validators.required, Validators.minLength(3)]),
       'nuevoUsuarioRestoDireccion': new FormControl(),
-      'nuevoUsuarioCorreo': new FormControl('', [Validators.required,
-                                                  Validators.pattern("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$")]),
+      'nuevoUsuarioCorreo': new FormControl('', [Validators.required,Validators.pattern("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$")]),
       'nuevoUsuarioEstamento': new FormControl('', Validators.required),
       'nuevoUsuarioTelefonoFijo': new FormControl(),
-      'nuevoUsuarioTelefonoCelular': new FormControl('', [Validators.minLength(9),
-                                                    Validators.maxLength(9)]),
+      'nuevoUsuarioTelefonoCelular': new FormControl('', [Validators.minLength(9),Validators.maxLength(9)]),
       'nuevoUsuarioEntidad': new FormControl('', Validators.required),
       'nuevoUsuarioRol': new FormControl('', Validators.required),
       'nuevoUsuarioContrasena1': new FormControl(),
-      'nuevoUsuarioContrasena2': new FormControl()
+      'nuevoUsuarioContrasena2': new FormControl(),
+      'nuevoVerReporte':new FormControl('',[Validators.required])
     })
     console.log(this.forma);
   }
 
   ngOnInit() {
    this.LoadTable();
+   //cargamos los demas elementos
+   this.obtenerRegiones(String(ecolId));
+   this.obtenerEntidadesContratantes(String(ecolId));
  }
 
   LoadTable(){
@@ -92,7 +99,8 @@ export class EditarUsuariosComponent implements OnInit {
                 { title: "Nombre Completo" },
                 { title: "Región" },
                 { title: "Estamento" },
-                { title: "Rol" }
+                { title: "Rol" },
+                { title: "Opciones"}
             ],
             "language": {
               "sProcessing":     "Procesando...",
@@ -118,8 +126,7 @@ export class EditarUsuariosComponent implements OnInit {
                   "sSortDescending": ": Activar para ordenar la columna de manera descendente"
               }
             },
-            "lengthMenu": [ 10, 15, 20, 50, 100, "All"],
-            "searching": false,
+            "lengthMenu": [ 10, 15, 20, 50, 100],
             "info": false,
             select: true,
             responsive: true,
@@ -139,26 +146,182 @@ export class EditarUsuariosComponent implements OnInit {
 
   guardarUsuario(usuario){
     console.log(this.forma.valid);
-    console.log(this.forma);
-    
+    console.log(this.forma);    
     if(this.forma.valid){
-      alert('Guardé');
-    }
-    
-  }
+      //se construye los elementos a guardar
+      var nombreUsuario = this.forma.value.nuevoUsuario;
+      var ecolId = this.forma.value.nuevoUsuarioEntidad.toString();
+      var rolId = this.forma.value.nuevoUsuarioRol.toString();
+      var nombres = this.forma.value.nuevoUsuarioNombre;
+      var apellidoPaterno = this.forma.value.nuevoUsuarioApellidoPat;
+      var apellidoMaterno = '';
+      var usuarioCreador = sessionStorage.getItem('UserName');
 
+      if (this.forma.value.nuevoUsuarioApellidoMat != null){
+        apellidoMaterno = this.forma.value.nuevoUsuarioApellidoMat;
+      }
+      var email = this.forma.value.nuevoUsuarioCorreo;
+      //es 0 puesto que es un usuario nuevo
+      var esNuevo;
+      var nombreUser;
+      if(this.tipoDeAccion == 'Editar'){
+        nombreUser = this.usuarioEditado;
+        esNuevo = 'False'
+      }
+      var telefonoFijo = '';
+      if (this.forma.value.nuevoUsuarioTelefonoFijo != null){
+        telefonoFijo = this.forma.value.nuevoUsuarioTelefonoFijo;
+      }
+      var telefonoCelular = '';
+      if(this.forma.value.nuevoUsuarioTelefonoCelular != null){
+        telefonoCelular = this.forma.value.nuevoUsuarioTelefonoCelular;
+      }
+      var rut = '';
+      if(this.forma.value.nuevoUsuarioRun != null){
+        rut = this.forma.value.nuevoUsuarioRun;
+      }
+      var direccion = '';
+      if(this.forma.value.nuevoUsuarioDireccion != null){
+        direccion = this.forma.value.nuevoUsuarioDireccion;
+      }
+      var idRegion = '';
+      if(this.forma.value.nuevoUsuarioRegion != null){
+        idRegion = this.forma.value.nuevoUsuarioRegion;
+      }
+      var idComuna = '';
+      if(this.forma.value.nuevoUsuarioComuna != null){
+        idComuna = this.forma.value.nuevoUsuarioComuna;
+      }
+      var estamento = '';
+      if(this.forma.value.nuevoUsuarioEstamento != null){
+        estamento = this.forma.value.nuevoUsuarioEstamento;
+      }
+      var contratante = '';
+      if(this.forma.value.nuevoUsuarioEntidad != null){
+        contratante = this.forma.value.nuevoUsuarioEntidad;
+      }
+      var restoDireccion;
+      if(this.forma.value.nuevoUsuarioRestoDireccion != null){
+        restoDireccion = this.forma.value.nuevoUsuarioRestoDireccion;
+      }
+      var veReportes;
+      if(this.forma.value.nuevoVerReporte.toString() != null){
+        veReportes = this.forma.value.nuevoVerReporte.toString();
+      }
+      var password = '';
+      var password2 = '';
+      
+      if(this.tipoDeAccion == 'Crear'){
+         esNuevo = 'True'
+         nombreUser = 0;
+        if(this.forma.value.nuevoUsuarioContrasena1 != null){
+          password = this.forma.value.nuevoUsuarioContrasena1;
+        }
+        if(this.forma.value.nuevoUsuarioContrasena1 != null){
+          password2 = this.forma.value.nuevoUsuarioContrasena2;
+        }
+        if (this.forma.value.nuevoUsuarioContrasena1 != null){
+          password2 = this.forma.value.nuevoUsuarioContrasena2;
+        }
+        if (password == null || password == ''){
+          this.showToast('error', 'Password es requerida', 'Error');
+          return;
+        }
+        if (password2 == null || password2 == ''){
+          this.showToast('error', 'Repita Password es requerida', 'Error');
+          return;
+        }
+        if (password != password2){
+          this.showToast('error', 'Las contraseñas deben coincidir', 'Error');
+          return;
+        }
+      }
+      this.loading = true;
+      this.auth.createModifyWebUser(
+        esNuevo,
+        nombreUsuario,
+        email,
+        password,
+        rol,
+        ecolId,
+        apellidoPaterno,
+        direccion,
+        idRegion,
+        idComuna,
+        nombres,
+        rut,
+        estamento,
+        contratante,
+        veReportes,
+        restoDireccion,
+        usuarioCreador,
+        telefonoCelular,
+        telefonoFijo
+      ).subscribe(
+        data => {
+          
+          if (data){
+            var usuarioCambiado = data.json();
+            if(usuarioCambiado.Datos){
+              console.log(usuarioCambiado.Datos);
+              console.log(usuarioCambiado.Mensaje);
+              if(this.tipoDeAccion == 'Crear'){
+                this.showToast('success', 'Usuario creado con éxito', 'Nuevo');
+              }
+              if(this.tipoDeAccion == 'Editar'){
+                this.showToast('success', 'Usuario editado con éxito', 'Edición');
+              }
+              //actualizar la lista
+              this.LoadTable();
+              this.loading = false;
+              //se limpian los campos 
+              if(this.tipoDeAccion == 'Crear'){
+                this.forma.reset({});
+              }
+              if(this.tipoDeAccion == 'Editar'){
+                //se cierra el modal 
+                 $("#modalCrearUsuario").modal("hide");
+              }
+            }
+            else{
+              //se levanta modal con error
+              if(usuarioCambiado.Mensaje){
+                if(usuarioCambiado.Mensaje.Codigo == '7'){
+                  console.log('error');
+                  this.showToast('error', 'Nombre de usuario ya existe', 'Error');  
+                }
+                else{
+                  console.log('error');
+                  this.showToast('error', usuarioCambiado.Mensaje.Texto, 'Error'); 
+                }
+              }
+              else{
+                console.log('error');
+                this.showToast('error', 'Error al crear usuario', 'Error');
+              }
+              this.loading = false;
+            }
+
+          }
+        },
+        err => {
+          this.showToast('error', err, 'Error');
+          console.error(err);
+          this.loading = false;
+          },
+        () => console.log('creado con exito')
+      );
+    }
+  }
+  
   obtenerRegiones(ecolId){
     //indicador valor
     this.global.postRegiones(ecolId.toString()).subscribe(
         data => {
           if (data){
             var listaRegionesR = data.json();
-
-            //este arreglo habria que recorrerlo con un ngfor
             if (listaRegionesR.Datos){
               this.listaRegiones = listaRegionesR.Datos;
-
-
               console.log(this.listaRegiones);
             }
             else{
@@ -227,61 +390,41 @@ export class EditarUsuariosComponent implements OnInit {
       );
 
   }
-  createModifyUser(
-    esNuevo,
-    nombreUsuario,
-    email,
-    password,
-    rol,
-    ecolId,
-    apellidoPaterno,
-    direccion,
-    idRegion,
-    idComuna,
-    nombres,
-    rut,
-    estamento,
-    contratante,
-    veReportes,
-    restoDireccion,
-    usuarioCreador,
-    telefonoCelular,
-    telefonoFijo
-  ){
-    this.auth.createModifyWebUser(
-      esNuevo,
-      nombreUsuario,
-      email,
-      password,
-      rol,
-      ecolId,
-      apellidoPaterno,
-      direccion,
-      idRegion,
-      idComuna,
-      nombres,
-      rut,
-      estamento,
-      contratante,
-      veReportes,
-      restoDireccion,
-      usuarioCreador,
-      telefonoCelular,
-      telefonoFijo
-    ).subscribe(
-      data => {
-        
-        if (data){
-          var usuarioCambiado = data.json();
-        }
-      },
-      err => {
-        console.error(err);
-        },
-      () => console.log('creado con exito')
-    );
-  }
+  
+  // editarUsuario(usuario){
+  //   this.obtenerComunas(ecolId);
+  //   this.tipoDeAccion='Editar';
+  //   this.usuarioEditado = usuario.Datos.NombreUsuario;
+  //   console.log(this.usuarioEditado);
+  //   this.forma.setValue({
+  //     nuevoUsuario: usuario.Datos.NombreUsuario,
+  //     nuevoUsuarioRun: usuario.Datos.Rut,
+  //     nuevoUsuarioNombre:usuario.Datos.Nombres,
+  //     nuevoUsuarioApellidoPat: usuario.Datos.ApellidoPaterno,
+  //     nuevoUsuarioApellidoMat: '',
+  //     nuevoUsuarioRegion: usuario.Datos.IdRegion,
+  //     nuevoUsuarioComuna: usuario.Datos.IdComuna,
+  //     nuevoUsuarioDireccion: usuario.Datos.Direccion,
+  //     nuevoUsuarioRestoDireccion: usuario.Datos.RestoDireccion,
+  //     nuevoUsuarioCorreo: usuario.Datos.Email,
+  //     nuevoUsuarioEstamento: usuario.Datos.Estamento,
+  //     nuevoUsuarioTelefonoFijo:usuario.Datos.TelefonoFijo,
+  //     nuevoUsuarioTelefonoCelular: usuario.Datos.TelefonoCelular,
+  //     nuevoUsuarioEntidad: usuario.Datos.Contratante,
+  //     nuevoUsuarioRol: usuario.Datos.Rol,
+  //     nuevoUsuarioContrasena1: '',
+  //     nuevoUsuarioContrasena2: '',
+  //     nuevoVerReporte: usuario.Datos.VeReportes
 
+  //   })
+  // }
+  viewUser(usuario){
+    console.log("ver usuario");
+  }
+  onChangeRegion(event){
+    console.log(event.target.value);
+    this.obtenerComunas(event.target.value);
+  }
 
   showToast(tipo, mensaje, titulo){
     if (tipo == 'success'){

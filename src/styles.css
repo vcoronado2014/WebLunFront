@@ -66,6 +66,19 @@ footer p{
     margin-bottom: 30px;
     margin-top: 3px;
 }
+.page-item.active .page-link {
+    z-index: 1;
+    color: #fff;
+    background-color: #FF7851;
+    border-color: #FF7851;
+}
+.page-link:hover {
+    z-index: 2;
+    color: #fff;
+    text-decoration: none;
+    background-color: #FF7851;
+    border-color: #FF7851;
+}
 /* Show register */
 .dataTables_length label {
     display: inline-flex !important;
@@ -82,4 +95,9 @@ table.dataTable {
 }
 table.dataTable.no-footer {
     border-bottom: none;
+}
+/* Search bar */
+.dataTables_filter label {
+    display: inline-flex !important;
+    margin-bottom: 0.5rem;
 }
