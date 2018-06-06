@@ -101,3 +101,9 @@ table.dataTable.no-footer {
     display: inline-flex !important;
     margin-bottom: 0.5rem;
 }
+/* check report */
+.puedeVer{
+    position: fixed;
+    margin-top: 25px;
+    margin-left: 606px;
+}
