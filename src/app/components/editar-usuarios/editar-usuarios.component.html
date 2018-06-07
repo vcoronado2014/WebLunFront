@@ -48,7 +48,7 @@
                   </div>
                   <div class="input-group-sm col-md-6">
                     <label for="inputRun">RUN</label>
-                    <input type="text" class="form-control" id="inputRun" formatRut name="rut" maxlength="9" placeholder="RUN" formControlName="nuevoUsuarioRun" (keyup)="formatoRut()" >
+                    <input type="text" class="form-control" id="inputRun" [(ngModel)]="rutUsuario" (blur)="formatoRut()" name="rut" maxlength="9" placeholder="ej: 123456789" formControlName="nuevoUsuarioRun" >
                 </div>
               </div>
               <div class="form-row mb-2">

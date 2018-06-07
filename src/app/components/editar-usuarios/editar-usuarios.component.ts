@@ -25,6 +25,7 @@ declare var $:any;
 })
 export class EditarUsuariosComponent implements OnInit {
 
+ rutUsuario:string; 
  users:any;
  loading = false;
  listaRoles;
@@ -86,10 +87,15 @@ export class EditarUsuariosComponent implements OnInit {
    this.obtenerEntidadesContratantes(String(ecolId));
  }
   formatoRut(){
-    $("#inputRun").rut({
-      formatOn: 'keyup',
-      useThousandsSeparator : false
-    });
+    var valor = this.rutUsuario;
+     // Aislar Cuerpo y Dígito Verificador
+    var cuerpo = valor.slice(0,-1);
+    var dv = valor.slice(-1);
+
+    this.rutUsuario = cuerpo + '-'+ dv;
+    console.log(this.rutUsuario);
+   
+    return this.rutUsuario;
   };
 
   LoadTable(){
