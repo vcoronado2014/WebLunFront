@@ -412,7 +412,7 @@ export class EditarUsuariosComponent implements OnInit {
       nuevoUsuarioRun: usuario.Rut,
       nuevoUsuarioNombre:usuario.Nombres,
       nuevoUsuarioApellidoPat: usuario.ApellidoPaterno,
-      nuevoUsuarioApellidoMat: '',
+      nuevoUsuarioApellidoMat: usuario.ApellidoMaterno,
       nuevoUsuarioRegion: usuario.IdRegion,
       nuevoUsuarioComuna: usuario.IdComuna,
       nuevoUsuarioDireccion: usuario.Direccion,

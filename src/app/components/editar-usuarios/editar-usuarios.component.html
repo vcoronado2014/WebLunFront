@@ -39,7 +39,6 @@
         </div>
         <!-- body  -->
         <div class="modal-body">
-
           <div class="col-md-12 ">
             <form [formGroup]="forma" (ngSubmit)="guardarUsuario()">
               <div class="form-row mb-2">
@@ -52,7 +51,6 @@
                     <input type="text" class="form-control" id="inputRun" formatRut name="rut" maxlength="9" placeholder="RUN" formControlName="nuevoUsuarioRun" (keyup)="formatoRut()" >
                 </div>
               </div>
-
               <div class="form-row mb-2">
                   <div class="input-group-sm col-md-5">
                       <label for="inputEntidad">Entidad contratante</label>
@@ -71,7 +69,6 @@
                       <label class="form-check-label" for="inputReporte">Ver reportes</label>
                   </div>
               </div>
-
               <div class="form-row mb-2">
                 <div class="input-group-sm col-md-4">
                   <label for="inputNombre">Nombre</label>
@@ -86,7 +83,6 @@
                   <input type="text" class="form-control" id="inputApellidoMaterno" placeholder="Apellido materno" formControlName="nuevoUsuarioApellidoMat">
                 </div>
               </div>
-          
               <div class="form-row mb-2">
                   <div class="input-group-sm col-md-6">
                       <label for="inputRegion1">Región</label>
@@ -101,7 +97,6 @@
                       </select>
                   </div>
               </div>
-
               <div class="form-row mb-2">
                       <div class="input-group-sm col-md-6">
                           <label for="inputDireccion">Nombre Vía</label>
@@ -112,7 +107,6 @@
                           <input type="text" class="form-control" id="inputRestoDireccion" placeholder="Resto de la dirección" formControlName="nuevoUsuarioRestoDireccion">
                       </div>
                   </div>
-      
               <div class="form-row mb-2">
                 <div class="input-group-sm col-md-6">
                   <label for="telefono1">Teléfono Fijo (opcional)</label>
@@ -135,7 +129,6 @@
                       </select>
                   </div>
               </div>
-              
               <div class="text-center alert-success p-1" *ngIf="tipoDeAccion == 'Editar'">
                 Si no desea cambiar la contraseña del usuario deje estos campos vacios.
               </div>
@@ -160,7 +153,6 @@
                   <button type="submit" class="btn btn-block btn_danger disabled ">Guardar</button>
                 </div>
               </div>
-              
             </form>
           </div>
         </div>
