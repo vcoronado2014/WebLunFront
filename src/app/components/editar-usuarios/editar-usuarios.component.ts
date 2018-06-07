@@ -85,6 +85,12 @@ export class EditarUsuariosComponent implements OnInit {
    this.obtenerRegiones(String(ecolId));
    this.obtenerEntidadesContratantes(String(ecolId));
  }
+  formatoRut(){
+    $("#inputRun").rut({
+      formatOn: 'keyup',
+      useThousandsSeparator : false
+    });
+  };
 
   LoadTable(){
     this.loading = true; 
@@ -154,7 +160,7 @@ export class EditarUsuariosComponent implements OnInit {
       var rolId = this.forma.value.nuevoUsuarioRol.toString();
       var nombres = this.forma.value.nuevoUsuarioNombre;
       var apellidoPaterno = this.forma.value.nuevoUsuarioApellidoPat;
-      var apellidoMaterno = '';
+      var apellidoMaterno = this.forma.value.nuevoUsuarioApellidoMat;
       var usuarioCreador = sessionStorage.getItem('UserName');
 
       if (this.forma.value.nuevoUsuarioApellidoMat != null){
@@ -235,6 +241,9 @@ export class EditarUsuariosComponent implements OnInit {
           this.showToast('error', 'Las contraseñas deben coincidir', 'Error');
           return;
         }
+        if(this.forma.value.nuevoUsuarioApellidoMat == null){
+          apellidoMaterno = '';
+        }
       }
       this.loading = true;
       this.auth.createModifyWebUser(
@@ -245,6 +254,7 @@ export class EditarUsuariosComponent implements OnInit {
         rol,
         ecolId,
         apellidoPaterno,
+        apellidoMaterno,
         direccion,
         idRegion,
         idComuna,
@@ -391,33 +401,34 @@ export class EditarUsuariosComponent implements OnInit {
 
   }
   
-  // editarUsuario(usuario){
-  //   this.obtenerComunas(ecolId);
-  //   this.tipoDeAccion='Editar';
-  //   this.usuarioEditado = usuario.Datos.NombreUsuario;
-  //   console.log(this.usuarioEditado);
-  //   this.forma.setValue({
-  //     nuevoUsuario: usuario.Datos.NombreUsuario,
-  //     nuevoUsuarioRun: usuario.Datos.Rut,
-  //     nuevoUsuarioNombre:usuario.Datos.Nombres,
-  //     nuevoUsuarioApellidoPat: usuario.Datos.ApellidoPaterno,
-  //     nuevoUsuarioApellidoMat: '',
-  //     nuevoUsuarioRegion: usuario.Datos.IdRegion,
-  //     nuevoUsuarioComuna: usuario.Datos.IdComuna,
-  //     nuevoUsuarioDireccion: usuario.Datos.Direccion,
-  //     nuevoUsuarioRestoDireccion: usuario.Datos.RestoDireccion,
-  //     nuevoUsuarioCorreo: usuario.Datos.Email,
-  //     nuevoUsuarioEstamento: usuario.Datos.Estamento,
-  //     nuevoUsuarioTelefonoFijo:usuario.Datos.TelefonoFijo,
-  //     nuevoUsuarioTelefonoCelular: usuario.Datos.TelefonoCelular,
-  //     nuevoUsuarioEntidad: usuario.Datos.Contratante,
-  //     nuevoUsuarioRol: usuario.Datos.Rol,
-  //     nuevoUsuarioContrasena1: '',
-  //     nuevoUsuarioContrasena2: '',
-  //     nuevoVerReporte: usuario.Datos.VeReportes
+  editarUsuario(usuario){
+    this.obtenerRegiones(ecolId);
+    this.obtenerComunas(usuario.IdRegion);
+    this.tipoDeAccion='Editar';
+    this.usuarioEditado = usuario.NombreUsuario;
+    console.log(this.usuarioEditado);
+    this.forma.setValue({
+      nuevoUsuario: usuario.NombreUsuario,
+      nuevoUsuarioRun: usuario.Rut,
+      nuevoUsuarioNombre:usuario.Nombres,
+      nuevoUsuarioApellidoPat: usuario.ApellidoPaterno,
+      nuevoUsuarioApellidoMat: '',
+      nuevoUsuarioRegion: usuario.IdRegion,
+      nuevoUsuarioComuna: usuario.IdComuna,
+      nuevoUsuarioDireccion: usuario.Direccion,
+      nuevoUsuarioRestoDireccion: usuario.RestoDireccion,
+      nuevoUsuarioCorreo: usuario.Emmail,
+      nuevoUsuarioEstamento: usuario.Estamento,
+      nuevoUsuarioTelefonoFijo:usuario.TelefonoFijo,
+      nuevoUsuarioTelefonoCelular: usuario.TelefonoCelular,
+      nuevoUsuarioEntidad: usuario.Contratante,
+      nuevoUsuarioRol: usuario.RolesUsuarios[0],
+      nuevoUsuarioContrasena1: '',
+      nuevoUsuarioContrasena2: '',
+      nuevoVerReporte: usuario.VeReportes
 
-  //   })
-  // }
+    })
+  }
   viewUser(usuario){
     console.log("ver usuario");
   }
