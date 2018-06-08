@@ -55,7 +55,7 @@
                   <div class="input-group-sm col-md-5">
                       <label for="inputEntidad">Entidad contratante</label>
                       <select class="custom-select" class="form-control" id="inputEntidad" formControlName="nuevoUsuarioEntidad">
-                      <option  *ngFor="let v of listaContratantes;" [value]="v.Id">{{v.RazonSocial}}</option>
+                      <option id="optContratante"  *ngFor="let v of listaContratantes;" [value]="v.Id">{{v.RazonSocial}}</option>
                       </select>
                   </div>
                   <div class="input-group-sm col-md-4">
@@ -146,12 +146,12 @@
 
               <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
-                <div *ngIf="forma.valid">
-                  <button type="submit" class="btn btn-block btn_danger">Guardar</button>
+                <div>
+                  <button type="submit" class="btn btn-block btn_naranja">Guardar</button>
                 </div>
-                <div *ngIf="!forma.valid">
+                <!-- <div *ngIf="!forma.valid">
                   <button type="submit" class="btn btn-block btn_danger disabled ">Guardar</button>
-                </div>
+                </div> -->
               </div>
             </form>
           </div>

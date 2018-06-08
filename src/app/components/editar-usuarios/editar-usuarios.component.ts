@@ -12,10 +12,7 @@ import { ServicioLoginService } from '../../services/servicio-login.service';
 import { GlobalService } from '../../services/global.service';
 
 declare var $:any;
- var rol = sessionStorage.getItem("Rol");
- var ecolId = sessionStorage.getItem("Ecol");
- var token = sessionStorage.getItem("token");
- var usuario = sessionStorage.getItem("UserName");
+
  
 
 @Component({
@@ -25,7 +22,12 @@ declare var $:any;
 })
 export class EditarUsuariosComponent implements OnInit {
 
- rutUsuario:string; 
+ rol = sessionStorage.getItem("Rol");
+ ecolId = sessionStorage.getItem("Ecol");
+ token = sessionStorage.getItem("token");
+ usuario = sessionStorage.getItem("UserName"); 
+ rutUsuario:string;
+ table:any; 
  users:any;
  loading = false;
  listaRoles;
@@ -46,7 +48,7 @@ export class EditarUsuariosComponent implements OnInit {
                private toastr: ToastsManager ){
 
     this.toastr.setRootViewContainerRef(_vcr);
-    if (rol != 'Super Administrador'){
+    if (this.rol != 'Super Administrador'){
       this.listaRoles = ['Administrador Web', 'Administrador Lun', 'Consultador'];
     }
     else{
@@ -55,7 +57,7 @@ export class EditarUsuariosComponent implements OnInit {
     this.listaContratantes = [];
     this.listaRegiones = [];
     this.listaComunas = [];
-    this.listaEstamentos = ['Profesional','Técnico'];
+    this.listaEstamentos = ['Profesional','Técnico', 'Administrativo'];
 
     this.forma = new FormGroup({
       'nuevoUsuario': new FormControl('', [Validators.required,Validators.minLength(3)]),
@@ -83,28 +85,17 @@ export class EditarUsuariosComponent implements OnInit {
   ngOnInit() {
    this.LoadTable();
    //cargamos los demas elementos
-   this.obtenerRegiones(String(ecolId));
-   this.obtenerEntidadesContratantes(String(ecolId));
+   this.obtenerRegiones(String(this.ecolId));
+   this.obtenerEntidadesContratantes(String(this.ecolId));
  }
-  formatoRut(){
-    var valor = this.rutUsuario;
-     // Aislar Cuerpo y Dígito Verificador
-    var cuerpo = valor.slice(0,-1);
-    var dv = valor.slice(-1);
-
-    this.rutUsuario = cuerpo + '-'+ dv;
-    console.log(this.rutUsuario);
-   
-    return this.rutUsuario;
-  };
 
   LoadTable(){
     this.loading = true; 
-    this.auth.getUsersWeb(rol,String(ecolId),token,usuario).subscribe(
+    this.auth.getUsersWeb(sessionStorage.getItem("Rol"),String(this.ecolId),this.token,this.usuario).subscribe(
       data => {
         this.users = data.Datos; 
         $(function(){
-          var table = $('#tablaUserWeb').DataTable({
+          this.table = $('#tablaUserWeb').DataTable({
             columns: [
                 { title: "Run" },
                 { title: "Nombre Usuario" },
@@ -150,17 +141,21 @@ export class EditarUsuariosComponent implements OnInit {
       }
     );
   }
+  cargarEstamentos(){
+    this.listaEstamentos = ['Profesional','Técnico', 'Administrativo'];
+  }
 
   modalCrearUsuario(){
     this.tipoDeAccion = 'Crear';
     this.forma.reset({});
   }
 
-  guardarUsuario(usuario){
-    console.log(this.forma.valid);
-    console.log(this.forma);    
-    if(this.forma.valid){
+  guardarUsuario(){
+    // console.log(this.forma.valid);
+    // console.log(this.forma);    
+    // if(this.forma.valid){
       //se construye los elementos a guardar
+      var nombreContratante = $('#optContratante').text();
       var nombreUsuario = this.forma.value.nuevoUsuario;
       var ecolId = this.forma.value.nuevoUsuarioEntidad.toString();
       var rolId = this.forma.value.nuevoUsuarioRol.toString();
@@ -173,6 +168,11 @@ export class EditarUsuariosComponent implements OnInit {
         apellidoMaterno = this.forma.value.nuevoUsuarioApellidoMat;
       }
       var email = this.forma.value.nuevoUsuarioCorreo;
+      //validacion de email
+      if (email == null || email == ''){
+        this.showToast('error', 'Email es requerido', 'Error');
+        return;
+      }
       //es 0 puesto que es un usuario nuevo
       var esNuevo;
       var nombreUser;
@@ -193,24 +193,35 @@ export class EditarUsuariosComponent implements OnInit {
         rut = this.forma.value.nuevoUsuarioRun;
       }
       var direccion = '';
-      if(this.forma.value.nuevoUsuarioDireccion != null){
+      if(this.forma.value.nuevoUsuarioDireccion != null && this.forma.value.nuevoUsuarioDireccion != ''){
         direccion = this.forma.value.nuevoUsuarioDireccion;
-      }
+      }else{
+        this.showToast('error', 'Dirección es requerida', 'Error');
+          return;
+        }
       var idRegion = '';
-      if(this.forma.value.nuevoUsuarioRegion != null){
+      if(this.forma.value.nuevoUsuarioRegion != null && this.forma.value.nuevoUsuarioRegion != ''){
         idRegion = this.forma.value.nuevoUsuarioRegion;
+      }else{
+        this.showToast('error', 'Región es requerida', 'Error');
       }
       var idComuna = '';
-      if(this.forma.value.nuevoUsuarioComuna != null){
+      if(this.forma.value.nuevoUsuarioComuna != null && this.forma.value.nuevoUsuarioComuna != ''){
         idComuna = this.forma.value.nuevoUsuarioComuna;
+      }else{
+        this.showToast('error', 'Comuna es requerida', 'Error');
       }
       var estamento = '';
-      if(this.forma.value.nuevoUsuarioEstamento != null){
+      if(this.forma.value.nuevoUsuarioEstamento != null && this.forma.value.nuevoUsuarioEstamento != ''){
         estamento = this.forma.value.nuevoUsuarioEstamento;
+      }else{
+        this.showToast('error', 'Estamento es requerida', 'Error');
       }
       var contratante = '';
-      if(this.forma.value.nuevoUsuarioEntidad != null){
+      if(this.forma.value.nuevoUsuarioEntidad != null && this.forma.value.nuevoUsuarioEntidad != ''){
         contratante = this.forma.value.nuevoUsuarioEntidad;
+      }else{
+        this.showToast('error', 'Entidad Contratante es requerida', 'Error');
       }
       var restoDireccion;
       if(this.forma.value.nuevoUsuarioRestoDireccion != null){
@@ -257,18 +268,18 @@ export class EditarUsuariosComponent implements OnInit {
         nombreUsuario,
         email,
         password,
-        rol,
-        ecolId,
+        this.rol,
+        String(ecolId),
         apellidoPaterno,
         apellidoMaterno,
         direccion,
-        idRegion,
-        idComuna,
+        String(idRegion),
+        String(idComuna),
         nombres,
         rut,
         estamento,
-        contratante,
-        veReportes,
+        nombreContratante,
+        String(veReportes),
         restoDireccion,
         usuarioCreador,
         telefonoCelular,
@@ -288,11 +299,52 @@ export class EditarUsuariosComponent implements OnInit {
                 this.showToast('success', 'Usuario editado con éxito', 'Edición');
               }
               //actualizar la lista
-              this.LoadTable();
+              this.table.destroy();
+              this.table = $('#tablaUserWeb').DataTable({
+                columns: [
+                    { title: "Run" },
+                    { title: "Nombre Usuario" },
+                    { title: "Nombre Completo" },
+                    { title: "Región" },
+                    { title: "Estamento" },
+                    { title: "Rol" },
+                    { title: "Opciones"}
+                ],
+                "language": {
+                  "sProcessing":     "Procesando...",
+                  "sLengthMenu":     "Mostrar _MENU_ registros",
+                  "sZeroRecords":    "No se encontraron resultados",
+                  "sEmptyTable":     "Ningún dato disponible en esta tabla",
+                  "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                  "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                  "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                  "sInfoPostFix":    "",
+                  "sSearch":         "Buscar:",
+                  "sUrl":            "",
+                  "sInfoThousands":  ",",
+                  "sLoadingRecords": "Cargando...",
+                  "oPaginate": {
+                      "sFirst":    "Primero",
+                      "sLast":     "Último",
+                      "sNext":     "Siguiente",
+                      "sPrevious": "Anterior"
+                  },
+                  "oAria": {
+                      "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                      "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                  }
+                },
+                "lengthMenu": [ 10, 15, 20, 25, 50, 100],
+                "info": false,
+                select: true,
+                responsive: true,
+                colReorder: true,
+              });
               this.loading = false;
               //se limpian los campos 
               if(this.tipoDeAccion == 'Crear'){
                 this.forma.reset({});
+                $("#modalCrearUsuario").modal("hide");
               }
               if(this.tipoDeAccion == 'Editar'){
                 //se cierra el modal 
@@ -327,7 +379,7 @@ export class EditarUsuariosComponent implements OnInit {
           },
         () => console.log('creado con exito')
       );
-    }
+    // }
   }
   
   obtenerRegiones(ecolId){
@@ -408,7 +460,9 @@ export class EditarUsuariosComponent implements OnInit {
   }
   
   editarUsuario(usuario){
-    this.obtenerRegiones(ecolId);
+    this.cargarEstamentos();
+    this.obtenerEntidadesContratantes(this.ecolId);
+    this.obtenerRegiones(this.ecolId);
     this.obtenerComunas(usuario.IdRegion);
     this.tipoDeAccion='Editar';
     this.usuarioEditado = usuario.NombreUsuario;
@@ -427,7 +481,7 @@ export class EditarUsuariosComponent implements OnInit {
       nuevoUsuarioEstamento: usuario.Estamento,
       nuevoUsuarioTelefonoFijo:usuario.TelefonoFijo,
       nuevoUsuarioTelefonoCelular: usuario.TelefonoCelular,
-      nuevoUsuarioEntidad: usuario.Contratante,
+      nuevoUsuarioEntidad: usuario.EncoId,
       nuevoUsuarioRol: usuario.RolesUsuarios[0],
       nuevoUsuarioContrasena1: '',
       nuevoUsuarioContrasena2: '',
@@ -442,6 +496,18 @@ export class EditarUsuariosComponent implements OnInit {
     console.log(event.target.value);
     this.obtenerComunas(event.target.value);
   }
+
+  formatoRut(){
+    var valor = this.rutUsuario;
+     // Aislar Cuerpo y Dígito Verificador
+    var cuerpo = valor.slice(0,-1);
+    var dv = valor.slice(-1);
+
+    this.rutUsuario = cuerpo + '-'+ dv;
+    console.log(this.rutUsuario);
+   
+    return this.rutUsuario;
+  };
 
   showToast(tipo, mensaje, titulo){
     if (tipo == 'success'){

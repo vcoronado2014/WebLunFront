@@ -107,3 +107,12 @@ table.dataTable.no-footer {
     margin-top: 25px;
     margin-left: 606px;
 }
+/* boton guardar */
+.btn_naranja{
+    background-color: #F28B26;
+    color: #fff;
+}
+table.dataTable thead th{
+    background-color:#78C2AD;
+    color:#ffff;
+}
