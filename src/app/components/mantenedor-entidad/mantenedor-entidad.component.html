@@ -1,1 +1,250 @@
-mantenedor entidad
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<div class="container mt-4">
+    <div *ngIf="entidadesContratantes != 0 && rolUsuario == 'Super Administrador'">
+        <table id="tablaUserWeb" class="display table table-hover pb-5 compact order-column" style="width:100%">
+            <tbody *ngIf="entidadesContratantes">
+                <tr *ngFor="let p of entidadesContratantes">
+                    <td>{{p.RazonSocial}}</td>
+                    <td>{{p.TipoContrato}}</td>
+                    <td>{{p.RebalseLun.Sobrecupo}}</td>
+                    <td>{{p.RebalseLun.TotalLicenciasInicial}}</td>
+                </tr> 
+            </tbody>
+        </table>
+    </div>
+    <div class="card-deck mb-4" *ngIf="rolUsuario != 'Super Administrador'">
+        <div class="card border-danger caja_tarjeta">
+            <div class="card-body">
+                <div class="row" style="margin-top: -15px;">
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalEditarContratante" (click)="editarIndividual()">
+                        <i class="fas fa-edit"></i> Modificar</button>
+                </div>
+                <div class="fa-3x text-center mb-2 text-danger">
+                    <i class="far fa-building"></i>
+                </div>
+                <h5 class="card-title text-center">Mi Entidad Contratante <strong>{{miContratante.RazonSocial}}</strong></h5>
+                <div class="row d-flex justify-content-center" style="margin-top: 3%;">
+                    <div class="card-deck mb-4">
+                        <div class="card border-light caja_tarjeta">
+                            <div class="card-body">
+                                <div class="fa-3x text-center mb-2 text-danger">
+                                    <i class="far fa-handshake"></i>
+                                </div>
+                                <h5 class="card-title text-center text-nowrap">Tipo Contrato</h5>
+                                <p class="card-text text-center">{{miContratante.TipoContrato}}</p>
+                            </div>
+                        </div>
+                        <div class="card border-light caja_tarjeta">
+                            <div class="card-body">
+                                <div class="fa-3x text-center mb-2 text-danger">
+                                    <i class="far fa-chart-bar"></i>
+                                </div>
+                                <h5 class="card-title text-center text-nowrap">Sobrecupo </h5>
+                                <h4 class="card-text text-center">{{miContratante.RebalseLun.Sobrecupo}}</h4>
+                            </div>
+                        </div>
+                        <div class="card border-light caja_tarjeta">
+                            <div class="card-body">
+                                <div class="fa-3x text-center mb-2 text-danger">
+                                    <i class="fas fa-chart-bar"></i>
+                                </div>   
+                                <h5 class="card-title text-center text-nowrap">Total Licencias</h5>
+                                <h4 class="card-text text-center">{{miContratante.RebalseLun.TotalLicenciasInicial}}</h4>
+                               
+                            </div>
+                        </div>
+                        <div class="card border-light caja_tarjeta">
+                                <div class="card-body">
+                                    <div class="fa-3x text-center mb-2 text-danger">
+                                        <i class="far fa-address-card"></i>
+                                    </div>
+                                    <h5 class="card-title text-center text-nowrap">Dirección</h5>
+                                    <p class="card-text text-center">{{miContratante.Direccion}} {{miContratante.Numero}} {{miContratante.RestoDireccion}}, {{miContratante.NombreComuna}} Región {{miContratante.NombreRegion}}</p>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Crear Usuario-->
+  <div class="modal fade bd-example-modal-lg" id="modalEditarContratante" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <!-- header -->
+            <div class="modal-header">
+              <h5 class="modal-title text-white" id="exampleModalLabel">Modificar</h5>
+              <button type="button" class="close cerrar_modal" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <!-- body  -->
+            <div class="modal-body">
+    
+            <div class="col-md-12 ">
+                <form [formGroup]="forma" (ngSubmit)="guardarContratante()">
+                    <div class="form-row mb-2">
+                        <div class="input-group-sm col-md-6">
+                            <label for="inputEmpleador">Empleador</label>
+                            <input type="text" class="form-control" id="inputEmpleador" placeholder="Empleador" formControlName="nuevoEmpleador">
+                        </div>
+                        <div class="input-group-sm col-md-6">
+                            <label for="inputTipoContrato">Tipo Contrato</label>
+                            <select class="custom-select" class="form-control" id="inputTipoContrato" formControlName="nuevoTipoContrato">
+                                <option *ngFor="let r of listaContratos;" [value]="r.Id">{{r.Nombre}}</option>
+                            </select>
+                        </div>
+            
+            
+                    </div>
+                    <div class="form-row mb-2">
+                        <div class="input-group-sm col-md-6">
+                            <label for="inputRegion1">Región</label>
+                            <select (change)="onChangeRegion($event)" class="custom-select" class="form-control" id="inputRegion1" formControlName="nuevoUsuarioRegion">
+                                <option *ngFor="let v of listaRegiones;" [value]="v.Id">{{v.Nombre}}</option>
+                            </select>
+                        </div>
+                        <div class="input-group-sm col-md-6">
+                            <label for="inputComuna">Comuna</label>
+                            <select class="custom-select" class="form-control" id="inputComuna" formControlName="nuevoUsuarioComuna">
+                                <option *ngFor="let r of listaComunas;" [value]="r.Id">{{r.Nombre}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row mb-2">
+                        <div class="input-group-sm col-md-5">
+                            <label for="inputDireccion">Nombre Vía</label>
+                            <input type="text" class="form-control" id="inputDireccion" placeholder="Nombre vía" formControlName="nuevoUsuarioDireccion">
+                        </div>
+                        <div class="input-group-sm col-md-2">
+                                <label for="inputNumeroDireccion">N°</label>
+                                <input type="text" class="form-control" id="inputNumeroDireccion" placeholder="N°" formControlName="nuevoUsuarioNumeroDireccion">
+                            </div>                        
+                        <div class="input-group-sm col-md-5">
+                            <label for="inputRestoDireccion">Resto dirección</label>
+                            <input type="text" class="form-control" id="inputRestoDireccion" placeholder="Resto de la dirección" formControlName="nuevoUsuarioRestoDireccion">
+                        </div>
+
+                    </div>
+                    <div class="form-row mb-2">
+                        <div class="input-group-sm col-md-6">
+                            <label for="inputSobrecupo">Sobrecupo</label>
+                            <input type="number" min="0" max="100000" class="form-control" id="inputSobrecupo"  formControlName="nuevoUsuarioSobrecupo">
+                        </div>
+                        <div class="input-group-sm col-md-6">
+                            <label for="inputTotalLicencias">Total Licencias</label>
+                            <input type="number" min="0" max="100000" class="form-control" id="inputTotalLicencias"  formControlName="nuevoUsuarioTotalLicencias">
+                        </div>
+                    </div>
+                    <!--
+                              <div class="form-row mb-2">
+                                  <div class="input-group-sm col-md-7">
+                                      <label for="inputEntidad">Entidad contratante</label>
+                                      <select class="custom-select" class="form-control" id="inputEntidad" formControlName="nuevoUsuarioEntidad">
+                                      <option  *ngFor="let v of listaContratantes;" [value]="v">{{v}}</option>
+                                      </select>
+                                  </div>
+                                  <div class="input-group-sm col-md-5">
+                                      <label for="inputRol">Rol del usuario</label>
+                                      <select class="custom-select" class="form-control" id="inputRol" formControlName="nuevoUsuarioRol">
+                                      <option  *ngFor="let r of listaRoles;" [value]="r">{{r}}</option>
+                                      </select>
+                                  </div>
+                              </div>
+                
+                              <div class="form-row mb-2">
+                                <div class="input-group-sm col-md-4">
+                                  <label for="inputNombre">Nombre</label>
+                                  <input  type="text" class="form-control" id="inputNombre" placeholder="Nombre" formControlName="nuevoUsuarioNombre">
+                                </div>
+                                <div class="input-group-sm col-md-4">
+                                  <label for="inputApellidoPaterno">Apellido paterno</label>
+                                  <input  type="text" class="form-control" id="inputApellidoPaterno" placeholder="Apellido paterno" formControlName="nuevoUsuarioApellidoPat">
+                                </div>
+                                <div class="input-group-sm col-md-4">
+                                  <label for="inputApellidoMaterno">Apellido materno (opcional)</label>
+                                  <input type="text" class="form-control" id="inputApellidoMaterno" placeholder="Apellido materno" formControlName="nuevoUsuarioApellidoMat">
+                                </div>
+                              </div>
+                          
+                              <div class="form-row mb-2">
+                                  <div class="input-group-sm col-md-6">
+                                      <label for="inputRegion1">Región</label>
+                                      <select class="custom-select" class="form-control" id="inputRegion1" formControlName="nuevoUsuarioRegion">
+                                      <option  *ngFor="let v of listaRegiones;" [value]="v">{{v}}</option>
+                                      </select>
+                                  </div>
+                                  <div class="input-group-sm col-md-6">
+                                      <label for="inputComuna">Comuna</label>
+                                      <select class="custom-select" class="form-control" id="inputComuna" formControlName="nuevoUsuarioComumna">
+                                      <option  *ngFor="let r of listaComunas;" [value]="r">{{r}}</option>
+                                      </select>
+                                  </div>
+                              </div>
+                
+                              <div class="form-row mb-2">
+                                      <div class="input-group-sm col-md-6">
+                                          <label for="inputDireccion">Nombre Vía</label>
+                                          <input type="text" class="form-control" id="inputDireccion" placeholder="Nombre vía" formControlName="nuevoUsuarioDireccion">
+                                      </div>
+                                      <div class="input-group-sm col-md-6">
+                                          <label for="inputRestoDireccion">Resto dirección</label>
+                                          <input type="text" class="form-control" id="inputRestoDireccion" placeholder="Resto de la dirección" formControlName="nuevoUsuarioRestoDireccion">
+                                      </div>
+                                  </div>
+                      
+                              <div class="form-row mb-2">
+                                <div class="input-group-sm col-md-6">
+                                  <label for="telefono1">Teléfono Fijo (opcional)</label>
+                                  <input type="tel" class="form-control" id="telefono1" placeholder="Teléfono fijo" maxlength="9" formControlName="nuevoUsuarioTelefonoFijo">
+                                </div>
+                                <div class="input-group-sm col-md-6">
+                                  <label for="telefono2">Teléfono Celular</label>
+                                  <input type="tel" class="form-control" id="telefono2" placeholder="Teléfono celular" maxlength="9" formControlName="nuevoUsuarioTelefonoCelular">
+                                </div>
+                              </div>
+                              <div class="form-row mb-2">
+                                  <div class="input-group-sm col-md-6">
+                                      <label for="inputEmail">Correo electrónico*</label>
+                                      <input type="email" class="form-control" id="inputEmail" placeholder="ejemplo@email.com" formControlName="nuevoUsuarioCorreo">
+                                  </div>
+                                  <div class="input-group-sm col-md-6">
+                                      <label for="inputEstamento">Estamento*</label>
+                                      <select class="custom-select" class="form-control" id="inputEstamento" formControlName="nuevoUsuarioEstamento">
+                                      <option  *ngFor="let r of listaEstamentos;" [value]="r">{{r}}</option>
+                                      </select>
+                                  </div>
+                              </div>
+                              
+                              <div class="text-center alert-success p-1" *ngIf="tipoDeAccion == 'Editar'">
+                                Si no desea cambiar la contraseña del usuario deje estos campos vacios.
+                              </div>
+                
+                              <div class="form-row mb-2">
+                                <div class="input-group-sm col-md-6">
+                                  <label for="contrasena1">Contraseña<span *ngIf="tipoDeAccion == 'Crear'">*</span></label> 
+                                  <input type="password" class="form-control" id="contrasena1" placeholder="Contraseña" formControlName="nuevoUsuarioContrasena1">
+                                </div>
+                                <div class="input-group-sm col-md-6">
+                                  <label for="contrasena2">Repita la contraseña<span *ngIf="tipoDeAccion == 'Crear'">*</span></label>
+                                  <input type="password" class="form-control" id="contrasena2" placeholder="Repetir contraseña" formControlName="nuevoUsuarioContrasena2">
+                                </div>
+                              </div>
+                            -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                        <div *ngIf="forma.valid">
+                            <button type="submit" class="btn btn-block btn_danger">Guardar</button>
+                        </div>
+                        <div *ngIf="!forma.valid">
+                            <button type="submit" class="btn btn-block btn_danger disabled">Guardar</button>
+                        </div>
+                    </div>
+            
+                </form>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
