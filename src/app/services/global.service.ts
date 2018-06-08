@@ -50,5 +50,31 @@ export class GlobalService {
       return data;
 
    }
+   gettEntidadContratante(ecolId){
+    let url = environment.API_ENDPOINT + 'EntidadContratante?ecolId=' + ecolId;
+    let data = this.http.get(url).map(data => data.json());
+    return data;
+
+   }
+  putEntidadContratante(empleador, idTipoContrato, idRegion, idComuna, ecolId, direccion, numero, restoDireccion, sobrecupo, totalLicencias) {
+    let url = environment.API_ENDPOINT + 'EntidadContratante';
+    let dataGet = {
+      Empleador: empleador,
+      EcolId: ecolId.toString(),
+      IdTipoContrato: idTipoContrato.toString(),
+      IdRegion: idRegion.toString(),
+      IdComuna: idComuna.toString(),
+      Direccion: direccion,
+      Numero: numero,
+      RestoDireccion: restoDireccion,
+      Sobrecupo: sobrecupo.toString(),
+      TotalLicencias: totalLicencias.toString()
+    };
+
+    let data = this.http.put(url, dataGet, {
+      headers: new Headers({ 'Content-Type': 'application/json' })
+    });
+    return data;
+  }
 
 }
