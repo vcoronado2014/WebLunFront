@@ -50,6 +50,9 @@ export class ServicioLoginService{
         var ecol = data.Datos.EncoId;
         var token = data.Datos.TokenSession;
         var repo = data.Datos.VeReportes;
+        if (rol == "Super Administrador" && ecol < 1){
+          ecol = 1;
+        }
 
 
         sessionStorage.setItem('Usuario',fullUser);

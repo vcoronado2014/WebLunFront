@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit {
         this.showToast('error',this.auth.mensajeError,'Error'); 
       },
       () => {
-        if(this.isLogged && this.rol == this.roles.adminWeb || this.rol.superAdmin){
+        if(this.isLogged && this.rol == this.roles.adminWeb || this.roles.superAdmin){
           //correcto
           console.log('Correcto administrador web');
           this.router.navigateByUrl('/administracion-web')
