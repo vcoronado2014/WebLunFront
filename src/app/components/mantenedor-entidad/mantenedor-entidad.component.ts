@@ -7,8 +7,12 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { FormGroup, FormControl, Validators, FormArray, FormBuilder } from '@angular/forms';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
+//Componente
+import { EditarUsuariosComponent } from '../editar-usuarios/editar-usuarios.component'
+
 //Servicios
 import { GlobalService } from '../../services/global.service';
+import { ServicioLoginService } from '../../services/servicio-login.service';
 declare var $:any;
 
 var ecolId = sessionStorage.getItem("Ecol");
@@ -44,6 +48,7 @@ export class MantenedorEntidadComponent implements OnInit {
     this.listaComunas=[];
     this.listaRegiones=[];
     this.cargarContratos();
+   
     this.miContratante = {
       RazonSocial: '',
       TipoContrato: '',
@@ -111,9 +116,7 @@ export class MantenedorEntidadComponent implements OnInit {
         console.log(this.miContratante);
         this.loading = false;
       }
-    );
-  }
-  this.LoadTable(){
+  LoadTable(){
     this.loading = true; 
     this.global.postEntidadesContratantes(String(this.ecolId)).subscribe(
       data => {
