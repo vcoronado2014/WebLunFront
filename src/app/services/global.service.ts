@@ -56,6 +56,16 @@ export class GlobalService {
     return data;
 
    }
+   
+  //  deleteUser(){
+
+  //   let url = environment.API_ENDPOINT + 'Usuario';
+
+  //   let data = this.http.delete(url, { params: {Id: ausId.toString(), TipoOperacion: '2' }});
+  //   return data;
+
+
+  // }
   putEntidadContratante(empleador, idTipoContrato, idRegion, idComuna, ecolId, direccion, numero, restoDireccion, sobrecupo, totalLicencias) {
     let url = environment.API_ENDPOINT + 'EntidadContratante';
     let dataGet = {
