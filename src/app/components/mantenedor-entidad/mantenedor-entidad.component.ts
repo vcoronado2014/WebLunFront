@@ -15,8 +15,8 @@ import { GlobalService } from '../../services/global.service';
 import { ServicioLoginService } from '../../services/servicio-login.service';
 declare var $:any;
 
-var ecolId = sessionStorage.getItem("Ecol");
-var rolUsuario = sessionStorage.getItem('Rol');
+//var ecolId = sessionStorage.getItem("Ecol");
+//var rolUsuario = sessionStorage.getItem('Rol');
 
 @Component({
   selector: 'app-mantenedor-entidad',
@@ -111,11 +111,17 @@ export class MantenedorEntidadComponent implements OnInit {
   }
   LoadEntidad(){
     this.loading = true;
+    this.global.gettEntidadContratante(String(this.ecolId)).subscribe(
+      data => {
+        this.miContratante = data.Datos;   
         var regId = this.miContratante.IdRegion;
+        this.obtenerComunas(String(regId)); 
         //this.cargarForma();
         console.log(this.miContratante);
         this.loading = false;
       }
+    );
+  }
   LoadTable(){
     this.loading = true; 
     this.global.postEntidadesContratantes(String(this.ecolId)).subscribe(
