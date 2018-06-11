@@ -23,12 +23,14 @@ export class MantenedorEntidadComponent implements OnInit {
   listaContratantes;
   loading = false;
   entidadesContratantes:any;
-  rolUsuario:string;
+  //rolUsuario:string;
   miContratante: any;
   forma:FormGroup;
   listaContratos;
   listaRegiones;
   listaComunas;
+  rolUsuario = sessionStorage.getItem('Rol');
+  ecolId = sessionStorage.getItem("Ecol");
   constructor
   (
     private fb: FormBuilder,
@@ -94,8 +96,8 @@ export class MantenedorEntidadComponent implements OnInit {
     this.cargaInicial();
   }
   cargaInicial(){
-    this.obtenerRegiones(String(ecolId));
-    if (rolUsuario == 'Super Administrador')
+    this.obtenerRegiones(String(this.ecolId));
+    if (sessionStorage.getItem('Rol') == 'Super Administrador')
       this.LoadTable();
     else
       this.LoadEntidad();
@@ -104,20 +106,16 @@ export class MantenedorEntidadComponent implements OnInit {
   }
   LoadEntidad(){
     this.loading = true;
-    this.global.gettEntidadContratante(String(ecolId)).subscribe(
-      data => {
-        this.miContratante = data.Datos;   
         var regId = this.miContratante.IdRegion;
-        this.obtenerComunas(String(regId)); 
         //this.cargarForma();
         console.log(this.miContratante);
         this.loading = false;
       }
     );
   }
-  LoadTable(){
+  this.LoadTable(){
     this.loading = true; 
-    this.global.postEntidadesContratantes(String(ecolId)).subscribe(
+    this.global.postEntidadesContratantes(String(this.ecolId)).subscribe(
       data => {
         var datosR = data.json();
         this.entidadesContratantes = datosR.Datos; 
@@ -127,7 +125,8 @@ export class MantenedorEntidadComponent implements OnInit {
                 { title: "Empleador" },
                 { title: "Tipo Contrato" },
                 { title: "Sobrecupo" },
-                { title: "Total Licencias" }
+                { title: "Total Licencias" },
+                { title: "Opciones"}
             ],
             "language": {
               "sProcessing":     "Procesando...",
@@ -270,7 +269,7 @@ export class MantenedorEntidadComponent implements OnInit {
         idTipoContrato,
         idRegion,
         idComuna,
-        ecolId,
+        this.ecolId,
         direccion,
         numero,
         restoDireccion,
@@ -347,3 +346,4 @@ export class MantenedorEntidadComponent implements OnInit {
 
   }
 }
+
