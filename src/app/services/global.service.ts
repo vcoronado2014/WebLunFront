@@ -11,6 +11,7 @@ export class GlobalService {
   constructor(
     private http: Http
   ) { 
+    
 
   }
   postRegiones(ecolId){
