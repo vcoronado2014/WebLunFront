@@ -52,16 +52,15 @@ export class LoginComponent implements OnInit {
         
       return this.showToast('error','Contraseña requerida','Error');
     }
+
     this.loading = true;
+    
     this.auth.login(this.loginUsuario,this.loginContrasena).subscribe(
       rs=> {
         this.loading = false;
-        this.isLogged = rs;
-        this.rol = sessionStorage.getItem("Rol");
+        this.isLogged = rs;        
         console.log(this.isLogged);
         sessionStorage.setItem('IsLogged', this.isLogged);
-        console.log(this.roles.adminWeb);
-        console.log(this.rol);
       },
       er => {
         this.loading = false;
@@ -69,45 +68,48 @@ export class LoginComponent implements OnInit {
         this.showToast('error',this.auth.mensajeError,'Error'); 
       },
       () => {
-        if(this.isLogged && this.rol == this.roles.adminWeb || this.roles.superAdmin){
-          //correcto
-          console.log('Correcto administrador web');
-          this.router.navigateByUrl('/administracion-web')
-          .then(data => console.log(data),
-            error =>{
-              console.log(error);
+        this.rol = sessionStorage.getItem("Rol");
+         if(this.isLogged == true){
+             if( this.rol == this.roles.adminWeb || this.roles.superAdmin){
+                //correcto
+                console.log('Correcto administrador web');
+                this.router.navigateByUrl('/administracion-web')
+                .then(data => console.log(data),
+                    error =>{
+                    console.log(error);
+                    }
+                )
             }
-          )
-        }
-        else if(this.isLogged && this.rol == this.roles.adminLun){
-          //correcto
-          console.log('Correcto administrador lun');
-          this.router.navigateByUrl('/administracion-lun')
-          .then(data => console.log(data),
-            error =>{
-              console.log(error);
+            else if(this.rol == this.roles.adminLun){
+                //correcto
+                console.log('Correcto administrador lun');
+                this.router.navigateByUrl('/administracion-lun')
+                .then(data => console.log(data),
+                  error =>{
+                    console.log(error);
+                  }
+                )
             }
-          )
-        }
-        else if(this.isLogged && this.rol == this.roles.consultor){
-          //correcto
-          console.log('Correcto Consultor lun');
-          this.router.navigateByUrl('/reportes')
-          .then(data => console.log(data),
-            error =>{
-              console.log(error);
+            else if(this.rol == this.roles.consultor){
+                //correcto
+                console.log('Correcto Consultor lun');
+                this.router.navigateByUrl('/reportes')
+                .then(data => console.log(data),
+                  error =>{
+                    console.log(error);
+                  }
+                )
             }
-          )
         }
         else{
           //incorrecto
           console.log('Incorrecto');
           this.showToast('error',this.auth.mensajeError,'Error');
+          this.router.navigateByUrl('/login'); 
         }
       }
     );
-     
-  }
+}
 
   showToast(tipo, mensaje, titulo){
     if (tipo == 'success'){

@@ -53,11 +53,10 @@ export class ServicioLoginService{
         var primerNombre = data.Datos.NombreCompleto.split(" ")[0];
         var apellPaterno = data.Datos.ApellidoPaterno;
         var stringContratante = data.Datos.Contratante;
+
         if (rol == "Super Administrador" && ecol < 1){
           ecol = 1;
         }
-
-
         sessionStorage.setItem('Usuario',fullUser);
         sessionStorage.setItem('UserName', nombreUser);
         sessionStorage.setItem('Contraseña', pass);

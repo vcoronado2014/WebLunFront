@@ -176,9 +176,32 @@ export class EditarUsuariosComponent implements OnInit {
       //es 0 puesto que es un usuario nuevo
       var esNuevo;
       var nombreUser;
+      var password = '';
+      var password2 = '';
       if(this.tipoDeAccion == 'Editar'){
         nombreUser = this.usuarioEditado;
         esNuevo = 'False'
+        if(this.forma.value.nuevoUsuarioContrasena1 != null){
+          password = this.forma.value.nuevoUsuarioContrasena1;
+        }
+        if(this.forma.value.nuevoUsuarioContrasena1 != null){
+          password2 = this.forma.value.nuevoUsuarioContrasena2;
+        }
+        if (this.forma.value.nuevoUsuarioContrasena1 != null){
+          password2 = this.forma.value.nuevoUsuarioContrasena2;
+        }
+        // if (password == null || password == ''){
+        //   this.showToast('error', 'Password es requerida', 'Error');
+        //   return;
+        // }
+        // if (password2 == null || password2 == ''){
+        //   this.showToast('error', 'Repita Password es requerida', 'Error');
+        //   return;
+        // }
+        if (password != password2){
+          this.showToast('error', 'Las contraseñas deben coincidir', 'Error');
+          return;
+        }
       }
       var telefonoFijo = '';
       if (this.forma.value.nuevoUsuarioTelefonoFijo != null){
@@ -231,8 +254,6 @@ export class EditarUsuariosComponent implements OnInit {
       if(this.forma.value.nuevoVerReporte.toString() != null){
         veReportes = this.forma.value.nuevoVerReporte.toString();
       }
-      var password = '';
-      var password2 = '';
       
       if(this.tipoDeAccion == 'Crear'){
          esNuevo = 'True'
