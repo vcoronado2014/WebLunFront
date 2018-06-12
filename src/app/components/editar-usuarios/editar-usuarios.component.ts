@@ -134,20 +134,6 @@ export class EditarUsuariosComponent implements OnInit {
             select: true,
             responsive: true,
             colReorder: true,
-            dom: 'Blftipr',
-            buttons: [
-              'excel', 'pdf',
-              {
-                extend: 'colvisGroup',
-                text: 'Show all',
-                show: ':hidden'
-            },
-            {
-                extend: 'colvisGroup',
-                text: 'Show none',
-                hide: ':visible'
-            }
-            ]
           });
         });       
         console.log(this.users);
