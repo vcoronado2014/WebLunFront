@@ -9,6 +9,8 @@ import { RouterModule, Routes } from '@angular/router';
 //Plugin
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
 import { LoadingModule } from 'ngx-loading';
+import { ModalModule } from 'ngx-modialog';
+import { BootstrapModalModule } from './../../node_modules/ngx-modialog/plugins/bootstrap';
 
 
 //Rutas
@@ -54,7 +56,9 @@ import { GlobalService } from './services/global.service';
     HttpClientModule,
     HttpModule,
     ToastModule.forRoot(),
-    LoadingModule
+    LoadingModule,
+    ModalModule.forRoot(),
+    BootstrapModalModule
   ],
   providers: [
     ServicioLoginService,

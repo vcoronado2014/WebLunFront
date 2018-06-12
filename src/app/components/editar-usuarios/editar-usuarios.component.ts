@@ -7,6 +7,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { FormGroup, FormControl, Validators, FormArray, FormBuilder } from '@angular/forms';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
+//Plugin
+import { ModalModule } from 'ngx-modialog';
+import { BootstrapModalModule, Modal, bootstrap4Mode } from '../../../../node_modules/ngx-modialog/plugins/bootstrap';
+
 //Servicios
 import { ServicioLoginService } from '../../services/servicio-login.service';
 import { GlobalService } from '../../services/global.service';
@@ -45,7 +49,8 @@ export class EditarUsuariosComponent implements OnInit {
                private fb: FormBuilder,
                private global: GlobalService,
                private _vcr: ViewContainerRef,
-               private toastr: ToastsManager ){
+               private toastr: ToastsManager,
+               public modal: Modal ){
 
     this.toastr.setRootViewContainerRef(_vcr);
     if (this.rol != 'Super Administrador'){
@@ -190,14 +195,6 @@ export class EditarUsuariosComponent implements OnInit {
         if (this.forma.value.nuevoUsuarioContrasena1 != null){
           password2 = this.forma.value.nuevoUsuarioContrasena2;
         }
-        // if (password == null || password == ''){
-        //   this.showToast('error', 'Password es requerida', 'Error');
-        //   return;
-        // }
-        // if (password2 == null || password2 == ''){
-        //   this.showToast('error', 'Repita Password es requerida', 'Error');
-        //   return;
-        // }
         if (password != password2){
           this.showToast('error', 'Las contraseñas deben coincidir', 'Error');
           return;
@@ -476,6 +473,61 @@ export class EditarUsuariosComponent implements OnInit {
       nuevoVerReporte: usuario.VeReportes
 
     })
+  }
+  deleteUser(usuario){
+    //eliminar usuarios
+    console.log(usuario);
+    let nombre = usuario.Nombres + ' ' + usuario.ApellidoPaterno;
+    const dialogRef = this.modal.confirm()
+      .size('lg')
+      .showClose(false)
+      .title('Eliminar Usuario')
+      .keyboard(27)
+      .body(`
+            <h4 class="text-center">¿Estás seguro de eliminar a ` + nombre + `?</h4>
+            <p class="text-center">Al eliminar el usuario no aparecerá en la lista y éste no podrá volver a acceder al sistema.</p>`)
+      .open();
+
+    dialogRef.result
+      .then( result => {
+          //alert(`The result is: ${result}`);
+          if (result){
+            //gatilla la accion de desactivar
+            this.loading = true;
+            this.auth.deleteUser(usuario.NombreUsuario.toString()).subscribe(
+              data => {
+                this.loading = false;
+                if (data){
+                  var usuarioCambiado = data.json();
+
+                  //este arreglo habria que recorrerlo con un ngfor
+                  if (usuarioCambiado.Datos){
+                    console.log(usuarioCambiado.Datos);
+                    console.log(usuarioCambiado.Mensaje);
+                    this.showToast('success', 'Usuario eliminado con éxito', 'Activado');
+                    //actualizamos la lista
+                    this.destroyTable();
+                    this.loading = true;
+                    this.LoadTable();
+                    this.loading = false;
+                  }
+                  else{
+                    //levantar un modal que hubo un error
+                    console.log('error');
+                    this.showToast('error', 'Error al eliminar usuario', 'Usuarios');
+                  }
+
+                }
+              },
+              err => {
+                this.showToast('error', err, 'Usuarios');
+                console.error(err);
+                },
+              () => console.log('get info contratantes')
+            );
+          }
+        }
+      );
   }
   viewUser(usuario){
     console.log("ver usuario");

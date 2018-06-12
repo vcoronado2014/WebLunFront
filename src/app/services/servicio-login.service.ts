@@ -166,6 +166,30 @@ export class ServicioLoginService{
     return data;
   }
 
+  // Eliminar usuario
+  deleteUser(usuario){
+    var usuarioEliminador = sessionStorage.getItem("UserName");
+    var token = sessionStorage.getItem("token");
+    var ecolId = sessionStorage.getItem("Ecol");
+
+    let url = environment.API_ENDPOINT + 'Login';
+    let dataGet ={
+      usuarioEliminar: usuario.nombreUsuario,
+      // usuarioEliminador: usuarioEliminador,
+      // token: token,
+      // ecolId: String(ecolId)
+    }
+/*
+    let data = this.http.delete(url, dataGet, {
+      headers: new Headers({'Content-Type': 'application/json'})
+    });
+*/
+    let data = this.http.delete(url, { params: { usuarioEliminar: usuario.nombreUsuario }});
+    return data;
+
+    //return data;
+  }
+
 
 }
 

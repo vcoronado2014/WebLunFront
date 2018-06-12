@@ -13,6 +13,7 @@ export class GlobalService {
   ) { 
 
   }
+
   postRegiones(ecolId){
     let url = environment.API_ENDPOINT + 'Region';
     let dataGet = {
