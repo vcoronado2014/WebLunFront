@@ -50,6 +50,9 @@ export class ServicioLoginService{
         var ecol = data.Datos.EncoId;
         var token = data.Datos.TokenSession;
         var repo = data.Datos.VeReportes;
+        var primerNombre = data.Datos.NombreCompleto.split(" ")[0];
+        var apellPaterno = data.Datos.ApellidoPaterno;
+        var stringContratante = data.Datos.Contratante;
         if (rol == "Super Administrador" && ecol < 1){
           ecol = 1;
         }
@@ -62,6 +65,9 @@ export class ServicioLoginService{
         sessionStorage.setItem('Ecol',ecol);
         sessionStorage.setItem('token', token);
         sessionStorage.setItem('VerReporte',repo);
+        sessionStorage.setItem('Nombre',primerNombre);
+        sessionStorage.setItem('Apellido', apellPaterno);
+        sessionStorage.setItem('Contratante',stringContratante);
 
         this.loggedIn = true;
         this.mensajeError = data.Mensaje.Texto;

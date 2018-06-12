@@ -1,1 +1,45 @@
-administracion web
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<div class="container-fluid mr-0 ml-0">
+    <div class="row">
+        <div class="col-sm-12 col-lg-12 mt-4 text-center">
+            <h2 class="">¡Hola {{nombreCompuesto}}!</h2> <hr><br>
+            <h4>¿Que deseas hacer?</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-lg-2 mt-4"></div>
+        <div class="col-sm-12 col-lg-8 mt-4 text-center">
+            <div class="card-deck mb-4">
+                <div class="card border-danger caja_tarjeta" (click)="irMantenedorWeb()">
+                    <div class="card-body">
+                        <div class="fa-3x text-center mb-2 text-danger">
+                            <i class="fas fa-users-cog"></i>
+                        </div>
+                        <h5 class="card-title text-center">Mantenedor de usuarios Web</h5>
+                        <p class="card-text">Aquí puedes crear, modificar y administrar a los usuarios web.</p>
+                </div>
+                </div>
+                <div class="card border-danger caja_tarjeta" (click)="irMantenedorContratante()">
+                    <div class="card-body">
+                        <div class="fa-3x text-center mb-2 text-danger">
+                            <i class="far fa-edit"></i>
+                        </div>   
+                        <h5 class="card-title text-center">Mantenedor entidad contratante</h5>
+                        <p class="card-text">Aquí puedes administrar datos de tu entidad contratante</p>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-lg-2 mt-4"></div>
+    </div>
+</div>
+
+
+
+
+
+
+        
+            
+                
+ 
