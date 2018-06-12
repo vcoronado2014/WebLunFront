@@ -268,7 +268,7 @@ export class EditarUsuariosComponent implements OnInit {
         nombreUsuario,
         email,
         password,
-        rolId,
+        rolId, 
         String(ecolId),
         apellidoPaterno,
         apellidoMaterno,
