@@ -155,7 +155,7 @@ export class ServicioLoginService{
     Contratante: contratante,
     VeReportes: veReportes,
     RestoDireccion:restoDireccion,
-   UsuarioCreador: nombreUsuario,
+    UsuarioCreador: nombreUsuario,
     TelefonoCelular: telefonoCelular,
     TelefonoFijo: telefonoFijo
   };
@@ -171,25 +171,13 @@ export class ServicioLoginService{
     var usuarioEliminador = sessionStorage.getItem("UserName");
     var token = sessionStorage.getItem("token");
     var ecolId = sessionStorage.getItem("Ecol");
+    var rol = sessionStorage.getItem("Rol");
+    var usuarioEliminar = usuario.NombreUsuario;
 
-    let url = environment.API_ENDPOINT + 'Login';
-    let dataGet ={
-      usuarioEliminar: usuario.nombreUsuario,
-      // usuarioEliminador: usuarioEliminador,
-      // token: token,
-      // ecolId: String(ecolId)
-    }
-/*
-    let data = this.http.delete(url, dataGet, {
-      headers: new Headers({'Content-Type': 'application/json'})
-    });
-*/
-    let data = this.http.delete(url, { params: { usuarioEliminar: usuario.nombreUsuario }});
+    let url = environment.API_ENDPOINT + 'login?usuarioEliminar=' + usuarioEliminar  + '&usuarioEliminador=' + usuarioEliminador + '&token=' + token + '&ecolId=' + ecolId +'&rol='+ rol;
+
+    let data = this.http.get(url);
     return data;
-
-    //return data;
   }
-
-
 }
 

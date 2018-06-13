@@ -8,6 +8,7 @@ import { FormGroup, FormControl, Validators, FormArray, FormBuilder } from '@ang
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
 //Plugin
+import { Overlay } from 'ngx-modialog';
 import { ModalModule } from 'ngx-modialog';
 import { BootstrapModalModule, Modal, bootstrap4Mode } from '../../../../node_modules/ngx-modialog/plugins/bootstrap';
 
@@ -479,6 +480,8 @@ export class EditarUsuariosComponent implements OnInit {
     console.log(usuario);
     let nombre = usuario.Nombres + ' ' + usuario.ApellidoPaterno;
     const dialogRef = this.modal.confirm()
+      .cancelBtn('Cancelar')
+      .okBtn('Confirmar')
       .size('lg')
       .showClose(false)
       .title('Eliminar Usuario')
@@ -490,27 +493,29 @@ export class EditarUsuariosComponent implements OnInit {
 
     dialogRef.result
       .then( result => {
-          //alert(`The result is: ${result}`);
           if (result){
             //gatilla la accion de desactivar
             this.loading = true;
-            this.auth.deleteUser(usuario.NombreUsuario.toString()).subscribe(
+            console.log(usuario.NombreUsuario)
+            this.auth.deleteUser(usuario).subscribe(
               data => {
                 this.loading = false;
+
                 if (data){
                   var usuarioCambiado = data.json();
 
-                  //este arreglo habria que recorrerlo con un ngfor
                   if (usuarioCambiado.Datos){
+
                     console.log(usuarioCambiado.Datos);
                     console.log(usuarioCambiado.Mensaje);
+
                     this.showToast('success', 'Usuario eliminado con éxito', 'Activado');
-                    //actualizamos la lista
-                    this.destroyTable();
                     this.loading = true;
+                    //actualizamos la lista
+                    this.destroyTable();                    
                     this.LoadTable();
                     this.loading = false;
-                  }
+                  } 
                   else{
                     //levantar un modal que hubo un error
                     console.log('error');
