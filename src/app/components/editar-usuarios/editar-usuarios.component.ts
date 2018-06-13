@@ -7,10 +7,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { FormGroup, FormControl, Validators, FormArray, FormBuilder } from '@angular/forms';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
-//Plugin
-import { Overlay } from 'ngx-modialog';
-import { ModalModule } from 'ngx-modialog';
-import { BootstrapModalModule, Modal, bootstrap4Mode } from '../../../../node_modules/ngx-modialog/plugins/bootstrap';
 
 //Servicios
 import { ServicioLoginService } from '../../services/servicio-login.service';
@@ -45,13 +41,14 @@ export class EditarUsuariosComponent implements OnInit {
  forma:FormGroup;
   //usuario editado
   usuarioEditado;
+  //usuario a eliminar
+  nombreAEliminar;
 
   constructor( private auth: ServicioLoginService,
                private fb: FormBuilder,
                private global: GlobalService,
                private _vcr: ViewContainerRef,
-               private toastr: ToastsManager,
-               public modal: Modal ){
+               private toastr: ToastsManager){
 
     this.toastr.setRootViewContainerRef(_vcr);
     if (this.rol != 'Super Administrador'){
@@ -81,7 +78,7 @@ export class EditarUsuariosComponent implements OnInit {
       'nuevoUsuarioTelefonoCelular': new FormControl('', [Validators.minLength(9),Validators.maxLength(9)]),
       'nuevoUsuarioEntidad': new FormControl('', Validators.required),
       'nuevoUsuarioRol': new FormControl('', Validators.required),
-      'nuevoUsuarioContrasena1': new FormControl(),
+      'nuevoUsuarioContrasena1': new FormControl('',Validators.pattern('^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,16}$')),
       'nuevoUsuarioContrasena2': new FormControl(),
       'nuevoVerReporte':new FormControl('',[Validators.required])
     })
@@ -161,6 +158,7 @@ export class EditarUsuariosComponent implements OnInit {
     // console.log(this.forma);    
     // if(this.forma.valid){
       //se construye los elementos a guardar
+      var expreg = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,16}$/;
       var nombreContratante = $('#optContratante').text();
       var nombreUsuario = this.forma.value.nuevoUsuario;
       var ecolId = this.forma.value.nuevoUsuarioEntidad.toString();
@@ -187,19 +185,18 @@ export class EditarUsuariosComponent implements OnInit {
       if(this.tipoDeAccion == 'Editar'){
         nombreUser = this.usuarioEditado;
         esNuevo = 'False'
-        if(this.forma.value.nuevoUsuarioContrasena1 != null){
+        if(expreg.test(this.forma.value.nuevoUsuarioContrasena1) == true && this.forma.value.nuevoUsuarioContrasena1 != null){
           password = this.forma.value.nuevoUsuarioContrasena1;
+        }else{
+          this.showToast('error', 'la contraseña debe ser segura', 'Error');
         }
         if(this.forma.value.nuevoUsuarioContrasena1 != null){
-          password2 = this.forma.value.nuevoUsuarioContrasena2;
-        }
-        if (this.forma.value.nuevoUsuarioContrasena1 != null){
           password2 = this.forma.value.nuevoUsuarioContrasena2;
         }
         if (password != password2){
           this.showToast('error', 'Las contraseñas deben coincidir', 'Error');
-          return;
         }
+        
       }
       var telefonoFijo = '';
       if (this.forma.value.nuevoUsuarioTelefonoFijo != null){
@@ -256,25 +253,20 @@ export class EditarUsuariosComponent implements OnInit {
       if(this.tipoDeAccion == 'Crear'){
          esNuevo = 'True'
          nombreUser = 0;
-        if(this.forma.value.nuevoUsuarioContrasena1 != null){
+         if(expreg.test(this.forma.value.nuevoUsuarioContrasena1) == true && this.forma.value.nuevoUsuarioContrasena1 != null){
           password = this.forma.value.nuevoUsuarioContrasena1;
+        }else{
+          this.showToast('error', 'la contraseña debe ser segura', 'Error');
         }
         if(this.forma.value.nuevoUsuarioContrasena1 != null){
           password2 = this.forma.value.nuevoUsuarioContrasena2;
-        }
-        if (this.forma.value.nuevoUsuarioContrasena1 != null){
-          password2 = this.forma.value.nuevoUsuarioContrasena2;
-        }
-        if (password == null || password == ''){
-          this.showToast('error', 'Password es requerida', 'Error');
-          return;
-        }
-        if (password2 == null || password2 == ''){
-          this.showToast('error', 'Repita Password es requerida', 'Error');
-          return;
         }
         if (password != password2){
           this.showToast('error', 'Las contraseñas deben coincidir', 'Error');
+          return;
+        }
+        if (password == '' && password2 == ''){
+          this.showToast('error', 'Contraseña requerida', 'Error');
           return;
         }
         if(this.forma.value.nuevoUsuarioApellidoMat == null){
@@ -475,67 +467,51 @@ export class EditarUsuariosComponent implements OnInit {
 
     })
   }
+
   deleteUser(usuario){
-    //eliminar usuarios
-    console.log(usuario);
-    let nombre = usuario.Nombres + ' ' + usuario.ApellidoPaterno;
-    const dialogRef = this.modal.confirm()
-      .cancelBtn('Cancelar')
-      .okBtn('Confirmar')
-      .size('lg')
-      .showClose(false)
-      .title('Eliminar Usuario')
-      .keyboard(27)
-      .body(`
-            <h4 class="text-center">¿Estás seguro de eliminar a ` + nombre + `?</h4>
-            <p class="text-center">Al eliminar el usuario no aparecerá en la lista y éste no podrá volver a acceder al sistema.</p>`)
-      .open();
-
-    dialogRef.result
-      .then( result => {
-          if (result){
-            //gatilla la accion de desactivar
-            this.loading = true;
-            console.log(usuario.NombreUsuario)
-            this.auth.deleteUser(usuario).subscribe(
-              data => {
-                this.loading = false;
-
-                if (data){
-                  var usuarioCambiado = data.json();
-
-                  if (usuarioCambiado.Datos){
-
-                    console.log(usuarioCambiado.Datos);
-                    console.log(usuarioCambiado.Mensaje);
-
-                    this.showToast('success', 'Usuario eliminado con éxito', 'Activado');
-                    this.loading = true;
-                    //actualizamos la lista
-                    this.destroyTable();                    
-                    this.LoadTable();
-                    this.loading = false;
-                  } 
-                  else{
-                    //levantar un modal que hubo un error
-                    console.log('error');
-                    this.showToast('error', 'Error al eliminar usuario', 'Usuarios');
-                  }
-
-                }
-              },
-              err => {
-                this.showToast('error', err, 'Usuarios');
-                console.error(err);
-                },
-              () => console.log('get info contratantes')
-            );
+    if(window.confirm('¿Estas seguro de eliminar a '+ usuario.Nombres)){
+      console.log(usuario.Nombres +' eliminado');
+      this.loading = true;
+      console.log(usuario.NombreUsuario)
+      this.auth.deleteUser(usuario).subscribe(
+        data => {
+          this.loading = false;
+            if (data){
+            var usuarioCambiado = data.json();
+  
+            if (usuarioCambiado.Datos){
+  
+              console.log(usuarioCambiado.Datos);
+              console.log(usuarioCambiado.Mensaje);
+  
+              this.showToast('success', 'Usuario eliminado con éxito', 'Eliminado');
+              this.loading = true;
+              //actualizamos la lista
+              this.destroyTable();                    
+              this.LoadTable();
+              this.loading = false;
+            } 
+            else{
+              //levantar un modal que hubo un error
+              console.log('error');
+              this.showToast('error', 'Error al eliminar usuario', 'Usuarios');
+            }
+  
           }
-        }
+        },
+        err => {
+          this.showToast('error', err, 'Usuarios');
+          console.error(err);
+          },
+        () => console.log('get info contratantes')
       );
+    }
   }
+ 
+
+
   viewUser(usuario){
-    console.log("ver usuario");
+    console.log(usuario);
   }
   onChangeRegion(event){
     console.log(event.target.value);
@@ -569,5 +545,6 @@ export class EditarUsuariosComponent implements OnInit {
     }
 
   }
+  
 
 }

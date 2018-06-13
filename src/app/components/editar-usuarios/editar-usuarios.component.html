@@ -19,13 +19,14 @@
                   <td>{{p.RolesUsuarios[0]}}</td>
                   <td>
                     <i class="fas fa-user-edit fa-lg iconos_editar" data-toggle="modal" data-target="#modalCrearUsuario" data-placement="bottom" title="Editar usuario" (click)="editarUsuario(p)"></i>
-                    <i class="fas fa-eye fa-lg iconos_editar"  data-toggle="modal" data-placement="bottom" title="Ver usuario" (click)="viewUser(usuario)"></i>
+                    <!-- <i class="fas fa-eye fa-lg iconos_editar"  data-toggle="modal" data-placement="bottom" title="Ver usuario" (click)="viewUser(p)"></i> -->
                     <i class="far fa-trash-alt fa-lg iconos_editar" data-toggle="modal" data-placement="bottom" (click)="deleteUser(p)" title="Eliminar usuario"></i>
                   </td>
               </tr> 
           </tbody>
       </table>
   </div>
+
 <!-- Modal Crear Usuario-->
   <div class="modal fade bd-example-modal-lg" id="modalCrearUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
