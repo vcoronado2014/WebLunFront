@@ -180,12 +180,19 @@ export class EditarUsuariosComponent implements OnInit {
       var contratante = this.forma.value.nuevoUsuarioEntidad;
       var veReportes = this.forma.value.nuevoVerReporte;
       //validacion de campos
+      if(apellidoPaterno == null || apellidoPaterno == ''){
+        this.showToast('error', 'El apellido es requerido', 'Error');
+        return;
+      }
       if (email == null || email == ''){
         this.showToast('error', 'Email es requerido', 'Error');
         return;
       }      
       if( telefonoCelular == null || telefonoCelular == ''){
         this.showToast('error', 'El teléfono es requerido', 'Error');
+        return;
+      }else if(telefonoCelular.length < 9){
+        this.showToast('error', 'El teléfono debe contener mínimo 9 dígitos', 'Error');
         return;
       }
       if( rut == null || rut == ''){
