@@ -39,6 +39,7 @@ export class GlobalService {
       return data;
 
    }
+   //necesita token 
    postEntidadesContratantes(ecolId){
     let url = environment.API_ENDPOINT + 'EntidadContratante';
     let dataGet = {
@@ -51,12 +52,14 @@ export class GlobalService {
       return data;
 
    }
+   // necesita token 
    gettEntidadContratante(ecolId){
     let url = environment.API_ENDPOINT + 'EntidadContratante?ecolId=' + ecolId;
     let data = this.http.get(url).map(data => data.json());
     return data;
 
    }
+   //necesita token
   putEntidadContratante(empleador, idTipoContrato, idRegion, idComuna, ecolId, direccion, numero, restoDireccion, sobrecupo, totalLicencias) {
     let url = environment.API_ENDPOINT + 'EntidadContratante';
     let dataGet = {
