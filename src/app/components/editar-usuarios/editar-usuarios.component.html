@@ -133,7 +133,9 @@
               <div class="text-center alert-success p-1" *ngIf="tipoDeAccion == 'Editar'">
                 Si no desea cambiar la contraseña del usuario deje estos campos vacios.
               </div>
-
+              <div class="text-center alert-success p-1" *ngIf="tipoDeAccion == 'Crear'">
+                La contraseña debe contener al menos 8 caracteres, una mayúscula, números y letras.
+              </div>
               <div class="form-row mb-2">
                 <div class="input-group-sm col-md-6">
                   <label for="contrasena1">Contraseña<span *ngIf="tipoDeAccion == 'Crear'">*</span></label> 

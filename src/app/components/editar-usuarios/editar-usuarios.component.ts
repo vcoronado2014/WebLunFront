@@ -64,7 +64,7 @@ export class EditarUsuariosComponent implements OnInit {
 
     this.forma = new FormGroup({
       'nuevoUsuario': new FormControl('', [Validators.required,Validators.minLength(3)]),
-      'nuevoUsuarioRun': new FormControl(),
+      'nuevoUsuarioRun': new FormControl('', Validators.required),
       'nuevoUsuarioNombre': new FormControl('', [Validators.required, Validators.minLength(3)]),
       'nuevoUsuarioApellidoPat': new FormControl('', [Validators.required, Validators.minLength(3)]),
       'nuevoUsuarioApellidoMat': new FormControl(),
@@ -79,7 +79,7 @@ export class EditarUsuariosComponent implements OnInit {
       'nuevoUsuarioEntidad': new FormControl('', Validators.required),
       'nuevoUsuarioRol': new FormControl('', Validators.required),
       'nuevoUsuarioContrasena1': new FormControl('',Validators.pattern('^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,16}$')),
-      'nuevoUsuarioContrasena2': new FormControl(),
+      'nuevoUsuarioContrasena2': new FormControl('',Validators.pattern('^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,16}$')),
       'nuevoVerReporte':new FormControl('',[Validators.required])
     })
     console.log(this.forma);
@@ -154,9 +154,6 @@ export class EditarUsuariosComponent implements OnInit {
   }
 
   guardarUsuario(){
-    // console.log(this.forma.valid);
-    // console.log(this.forma);    
-    // if(this.forma.valid){
       //se construye los elementos a guardar
       var expreg = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,16}$/;
       var nombreContratante = $('#optContratante').text();
@@ -167,110 +164,89 @@ export class EditarUsuariosComponent implements OnInit {
       var apellidoPaterno = this.forma.value.nuevoUsuarioApellidoPat;
       var apellidoMaterno = this.forma.value.nuevoUsuarioApellidoMat;
       var usuarioCreador = sessionStorage.getItem('UserName');
-
-      if (this.forma.value.nuevoUsuarioApellidoMat != null){
-        apellidoMaterno = this.forma.value.nuevoUsuarioApellidoMat;
-      }
       var email = this.forma.value.nuevoUsuarioCorreo;
-      //validacion de email
+      var esNuevo;
+      var nombreUser;
+      var password = this.forma.value.nuevoUsuarioContrasena1;
+      var password2 = this.forma.value.nuevoUsuarioContrasena2;
+      var telefonoFijo = this.forma.value.nuevoUsuarioTelefonoFijo;
+      var telefonoCelular = this.forma.value.nuevoUsuarioTelefonoCelular;
+      var rut = this.forma.value.nuevoUsuarioRun;
+      var direccion = this.forma.value.nuevoUsuarioDireccion;
+      var restoDireccion = this.forma.value.nuevoUsuarioRestoDireccion;
+      var idRegion = this.forma.value.nuevoUsuarioRegion;
+      var idComuna = this.forma.value.nuevoUsuarioComuna;
+      var estamento = this.forma.value.nuevoUsuarioEstamento;
+      var contratante = this.forma.value.nuevoUsuarioEntidad;
+      var veReportes = this.forma.value.nuevoVerReporte;
+      //validacion de campos
       if (email == null || email == ''){
         this.showToast('error', 'Email es requerido', 'Error');
         return;
+      }      
+      if( telefonoCelular == null || telefonoCelular == ''){
+        this.showToast('error', 'El teléfono es requerido', 'Error');
+        return;
       }
-      //es 0 puesto que es un usuario nuevo
-      var esNuevo;
-      var nombreUser;
-      var password = '';
-      var password2 = '';
-      if(this.tipoDeAccion == 'Editar'){
-        nombreUser = this.usuarioEditado;
-        esNuevo = 'False'
-        if(expreg.test(this.forma.value.nuevoUsuarioContrasena1) == true && this.forma.value.nuevoUsuarioContrasena1 != null){
-          password = this.forma.value.nuevoUsuarioContrasena1;
-        }else{
-          this.showToast('error', 'la contraseña debe ser segura', 'Error');
-        }
-        if(this.forma.value.nuevoUsuarioContrasena1 != null){
-          password2 = this.forma.value.nuevoUsuarioContrasena2;
-        }
-        if (password != password2){
-          this.showToast('error', 'Las contraseñas deben coincidir', 'Error');
-        }
-        
+      if( rut == null || rut == ''){
+        this.showToast('error', 'El run es requerido', 'Error');
+        return;
       }
-      var telefonoFijo = '';
-      if (this.forma.value.nuevoUsuarioTelefonoFijo != null){
-        telefonoFijo = this.forma.value.nuevoUsuarioTelefonoFijo;
-      }
-      var telefonoCelular = '';
-      if(this.forma.value.nuevoUsuarioTelefonoCelular != null){
-        telefonoCelular = this.forma.value.nuevoUsuarioTelefonoCelular;
-      }
-      var rut = '';
-      if(this.forma.value.nuevoUsuarioRun != null){
-        rut = this.forma.value.nuevoUsuarioRun;
-      }
-      var direccion = '';
-      if(this.forma.value.nuevoUsuarioDireccion != null && this.forma.value.nuevoUsuarioDireccion != ''){
-        direccion = this.forma.value.nuevoUsuarioDireccion;
-      }else{
+      if( direccion == null || direccion == ''){
         this.showToast('error', 'Dirección es requerida', 'Error');
           return;
-        }
-      var idRegion = '';
-      if(this.forma.value.nuevoUsuarioRegion != null && this.forma.value.nuevoUsuarioRegion != ''){
-        idRegion = this.forma.value.nuevoUsuarioRegion;
-      }else{
+      }
+      if( restoDireccion == null || restoDireccion == '' ){
+        this.showToast('error', 'Resto dirección requerido', 'Error');
+        return;
+      }     
+      if( idRegion == null || idRegion == ''){
         this.showToast('error', 'Región es requerida', 'Error');
-      }
-      var idComuna = '';
-      if(this.forma.value.nuevoUsuarioComuna != null && this.forma.value.nuevoUsuarioComuna != ''){
-        idComuna = this.forma.value.nuevoUsuarioComuna;
-      }else{
+        return;
+      }      
+      if( idComuna == null || idComuna == ''){
         this.showToast('error', 'Comuna es requerida', 'Error');
-      }
-      var estamento = '';
-      if(this.forma.value.nuevoUsuarioEstamento != null && this.forma.value.nuevoUsuarioEstamento != ''){
-        estamento = this.forma.value.nuevoUsuarioEstamento;
-      }else{
+        return;
+      }      
+      if( estamento == null || estamento == ''){
         this.showToast('error', 'Estamento es requerida', 'Error');
+        return;
       }
-      var contratante = '';
-      if(this.forma.value.nuevoUsuarioEntidad != null && this.forma.value.nuevoUsuarioEntidad != ''){
-        contratante = this.forma.value.nuevoUsuarioEntidad;
-      }else{
+      if( contratante == null || contratante == ''){
         this.showToast('error', 'Entidad Contratante es requerida', 'Error');
-      }
-      var restoDireccion;
-      if(this.forma.value.nuevoUsuarioRestoDireccion != null){
-        restoDireccion = this.forma.value.nuevoUsuarioRestoDireccion;
-      }
-      var veReportes;
-      if(this.forma.value.nuevoVerReporte.toString() != null){
-        veReportes = this.forma.value.nuevoVerReporte.toString();
-      }
-      
+        return;
+      }      
       if(this.tipoDeAccion == 'Crear'){
          esNuevo = 'True'
          nombreUser = 0;
-         if(expreg.test(this.forma.value.nuevoUsuarioContrasena1) == true && this.forma.value.nuevoUsuarioContrasena1 != null){
-          password = this.forma.value.nuevoUsuarioContrasena1;
-        }else{
+        if(expreg.test(password) != true){
           this.showToast('error', 'la contraseña debe ser segura', 'Error');
+          return;
         }
-        if(this.forma.value.nuevoUsuarioContrasena1 != null){
-          password2 = this.forma.value.nuevoUsuarioContrasena2;
-        }
-        if (password != password2){
+        if(password != password2){
           this.showToast('error', 'Las contraseñas deben coincidir', 'Error');
           return;
         }
-        if (password == '' && password2 == ''){
+        if(password == null && password2 == null || password == '' && password2 == '' ){
           this.showToast('error', 'Contraseña requerida', 'Error');
           return;
         }
-        if(this.forma.value.nuevoUsuarioApellidoMat == null){
-          apellidoMaterno = '';
+        if(veReportes == null){
+          veReportes = "false"
+        }
+      }
+      if(this.tipoDeAccion == 'Editar'){
+        nombreUser = this.usuarioEditado;
+        esNuevo = 'False'
+        if(password){
+          if(expreg.test(password) != true){
+            this.showToast('error', 'la contraseña debe ser segura', 'Error');
+            return;
+          }
+          if(password != password2){
+            this.showToast('error', 'Las contraseñas deben coincidir', 'Error');
+            return;
+          }
         }
       }
       this.loading = true;
