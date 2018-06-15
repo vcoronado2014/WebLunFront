@@ -1,11 +1,14 @@
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, ViewChild  } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from "@angular/router";
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/retry';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormGroup, FormControl, Validators, FormArray, FormBuilder } from '@angular/forms';
+
+//Plugins
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+
 
 
 //Servicios
@@ -451,43 +454,65 @@ export class EditarUsuariosComponent implements OnInit {
     })
   }
 
+   
+  //Eliminar usuario
+  //Modal Options
+  options: any = {
+     confirmBtnClass: 'btn btn-success',      //DEFAULT VALUE
+     confirmBtnText: 'Confirmar',      				//DEFAULT VALUE
+     cancelBtnClass: 'btn btn-danger',      //DEFAULT VALUE
+     cancelBtnText: 'Cancelar',      				//DEFAULT VALUE
+     modalSize: 'lg',      							 //DEFAULT VALUE
+     modalClass: ''      								//DEFAULT VALUE
+    }
+    message:any = 'Al eliminar este usuario no podrá volver a ingresar'
+    title:any = '¿Estas seguro de eliminar a este usuario'
+ 
+  confirmed(usuario) {
+    console.log(usuario.Nombres +' eliminado');
+    this.loading = true;
+    console.log(usuario.NombreUsuario)
+    this.auth.deleteUser(usuario).subscribe(
+      data => {
+        this.loading = false;
+          if (data){
+          var usuarioCambiado = data.json();
+
+          if (usuarioCambiado.Datos){
+
+            console.log(usuarioCambiado.Datos);
+            console.log(usuarioCambiado.Mensaje);
+
+            this.showToast('success', 'Usuario eliminado con éxito', 'Eliminado');
+            this.loading = true;
+            //actualizamos la lista
+            this.destroyTable();                    
+            this.LoadTable();
+            this.loading = false;
+          } 
+          else{
+            //levantar un modal que hubo un error
+            console.log('error');
+            this.showToast('error', 'Error al eliminar usuario', 'Usuarios');
+          }
+
+        }
+      },
+      err => {
+        this.showToast('error', err, 'Usuarios');
+        console.error(err);
+        },
+      () => console.log('get info contratantes')
+    );
+  }
+ 
+  cancelled() {
+   console.log('cancelled');
+  }
+ 
   deleteUser(usuario){
     if(window.confirm('¿Estas seguro de eliminar a '+ usuario.Nombres)){
-      console.log(usuario.Nombres +' eliminado');
-      this.loading = true;
-      console.log(usuario.NombreUsuario)
-      this.auth.deleteUser(usuario).subscribe(
-        data => {
-          this.loading = false;
-            if (data){
-            var usuarioCambiado = data.json();
-  
-            if (usuarioCambiado.Datos){
-  
-              console.log(usuarioCambiado.Datos);
-              console.log(usuarioCambiado.Mensaje);
-  
-              this.showToast('success', 'Usuario eliminado con éxito', 'Eliminado');
-              this.loading = true;
-              //actualizamos la lista
-              this.destroyTable();                    
-              this.LoadTable();
-              this.loading = false;
-            } 
-            else{
-              //levantar un modal que hubo un error
-              console.log('error');
-              this.showToast('error', 'Error al eliminar usuario', 'Usuarios');
-            }
-  
-          }
-        },
-        err => {
-          this.showToast('error', err, 'Usuarios');
-          console.error(err);
-          },
-        () => console.log('get info contratantes')
-      );
+
     }
   }
  

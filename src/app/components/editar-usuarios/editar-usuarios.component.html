@@ -8,23 +8,23 @@
       </div>
   </div>
   <div *ngIf="users != 0">
-      <table id="tablaUserWeb" class="display table table-hover pb-5 compact order-column" style="width:100%">
-          <tbody *ngIf="users">
-              <tr *ngFor="let p of users">
-                  <td>{{p.Rut}}</td>
-                  <td>{{p.NombreUsuario}}</td>
-                  <td>{{p.NombreCompleto}}</td>
-                  <td>{{p.NombreRegion}}</td>
-                  <td>{{p.Estamento}}</td>
-                  <td>{{p.RolesUsuarios[0]}}</td>
-                  <td>
-                    <i class="fas fa-user-edit fa-lg iconos_editar" data-toggle="modal" data-target="#modalCrearUsuario" data-placement="bottom" title="Editar usuario" (click)="editarUsuario(p)"></i>
-                    <!-- <i class="fas fa-eye fa-lg iconos_editar"  data-toggle="modal" data-placement="bottom" title="Ver usuario" (click)="viewUser(p)"></i> -->
-                    <i class="far fa-trash-alt fa-lg iconos_editar" data-toggle="modal" data-placement="bottom" (click)="deleteUser(p)" title="Eliminar usuario"></i>
-                  </td>
-              </tr> 
-          </tbody>
-      </table>
+    <table id="tablaUserWeb" class="display table table-hover pb-5 compact order-column" style="width:100%">
+        <tbody *ngIf="users">
+            <tr *ngFor="let p of users">
+                <td>{{p.Rut}}</td>
+                <td>{{p.NombreUsuario}}</td>
+                <td>{{p.NombreCompleto}}</td>
+                <td>{{p.NombreRegion}}</td>
+                <td>{{p.Estamento}}</td>
+                <td>{{p.RolesUsuarios[0]}}</td>
+                <td>
+                  <i class="fas fa-user-edit fa-lg iconos_editar" data-toggle="modal" data-target="#modalCrearUsuario" data-placement="bottom" title="Editar usuario" (click)="editarUsuario(p)"></i>
+                  <!-- <i class="fas fa-eye fa-lg iconos_editar"  data-toggle="modal" data-placement="bottom" title="Ver usuario" (click)="viewUser(p)"></i> -->
+                  <a  ngConfirm [title]="title" [message]="message" [options]="options" (onConfirm)="confirmed(p)" (onCancel)="cancelled()"><i class="far fa-trash-alt fa-lg iconos_editar"  data-placement="bottom" title="Eliminar usuario"></i></a>
+                </td>
+            </tr> 
+        </tbody>
+    </table>
   </div>
 
 <!-- Modal Crear Usuario-->

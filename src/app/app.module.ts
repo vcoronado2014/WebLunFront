@@ -9,6 +9,8 @@ import { RouterModule, Routes } from '@angular/router';
 //Plugin
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
 import { LoadingModule } from 'ngx-loading';
+import { ConfirmationModalModule } from 'ng-confirmation-modal';
+
 
 
 
@@ -56,6 +58,7 @@ import { GlobalService } from './services/global.service';
     HttpModule,
     ToastModule.forRoot(),
     LoadingModule,
+    ConfirmationModalModule.forRoot({})
   ],
   providers: [
     ServicioLoginService,
