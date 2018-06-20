@@ -153,6 +153,7 @@ export class EditarUsuariosComponent implements OnInit {
 
   modalCrearUsuario(){
     this.tipoDeAccion = 'Crear';
+    this.activar(this.tipoDeAccion + ' Usuario');
     this.forma.reset({});
   }
 
@@ -423,7 +424,62 @@ export class EditarUsuariosComponent implements OnInit {
 
   }
   
-  editarUsuario(usuario){
+  soloLectura(){
+    //bloquear todo
+    $("#inputNombreUsuario").attr("disabled", "disabled"); 
+    $("#inputRun").attr("disabled", "disabled"); 
+    $("#inputEntidad").attr("disabled", "disabled"); 
+    $("#inputRol").attr("disabled", "disabled"); 
+    $("#inputReporte").attr("disabled", "disabled"); 
+    $("#inputNombre").attr("disabled", "disabled"); 
+    $("#inputApellidoPaterno").attr("disabled", "disabled"); 
+    $("#inputApellidoMaterno").attr("disabled", "disabled"); 
+    $("#inputRegion1").attr("disabled", "disabled"); 
+    $("#inputComuna").attr("disabled", "disabled"); 
+    $("#inputDireccion").attr("disabled", "disabled"); 
+    $("#telefono1").attr("disabled", "disabled"); 
+    $("#telefono2").attr("disabled", "disabled"); 
+    $("#inputEmail").attr("disabled", "disabled"); 
+    $("#contrasena1").attr("disabled", "disabled"); 
+    $("#contrasena2").attr("disabled", "disabled"); 
+    $("#inputRestoDireccion").attr("disabled", "disabled"); 
+    $("#inputEstamento").attr("disabled", "disabled"); 
+
+    $("#exampleModalLabel").text("Información");
+    $("#btnGuardar").hide();
+    $("#lblInfoPass").hide();
+    $("#lblInfoPass2").hide();
+    $("#lblInfoPass3").hide();
+}
+activar(titulo){
+  //bloquear todo
+  $("#inputNombreUsuario").attr("disabled", false); 
+  $("#inputRun").attr("disabled", false); 
+  $("#inputEntidad").attr("disabled", false); 
+  $("#inputRol").attr("disabled", false); 
+  $("#inputReporte").attr("disabled", false); 
+  $("#inputNombre").attr("disabled", false); 
+  $("#inputApellidoPaterno").attr("disabled", false); 
+  $("#inputApellidoMaterno").attr("disabled", false); 
+  $("#inputRegion1").attr("disabled", false); 
+  $("#inputComuna").attr("disabled", false); 
+  $("#inputDireccion").attr("disabled", false); 
+  $("#telefono1").attr("disabled", false); 
+  $("#telefono2").attr("disabled", false); 
+  $("#inputEmail").attr("disabled", false); 
+  $("#contrasena1").attr("disabled", false); 
+  $("#contrasena2").attr("disabled", false); 
+  $("#inputRestoDireccion").attr("disabled", false); 
+  $("#inputEstamento").attr("disabled", false); 
+
+  $("#exampleModalLabel").text(titulo);
+  $("#btnGuardar").show();
+  $("#lblInfoPass").show();
+  $("#lblInfoPass2").show();
+  $("#lblInfoPass3").show();
+}
+
+  editarUsuario(usuario, mostrar){
     this.cargarEstamentos();
     this.obtenerEntidadesContratantes(this.ecolId);
     this.obtenerRegiones(this.ecolId);
@@ -451,7 +507,20 @@ export class EditarUsuariosComponent implements OnInit {
       nuevoUsuarioContrasena2: '',
       nuevoVerReporte: usuario.VeReportes
 
-    })
+    });
+
+    if (mostrar == 'ver'){
+      this.soloLectura();
+    }
+    else{
+      this.activar(this.tipoDeAccion + ' Usuario');
+    }
+    if (this.tipoDeAccion == 'Editar'){
+      $("#inputNombreUsuario").attr("disabled", "disabled"); 
+    }
+    else {
+      $("#inputNombreUsuario").attr("disabled", false); 
+    }
   }
 
    

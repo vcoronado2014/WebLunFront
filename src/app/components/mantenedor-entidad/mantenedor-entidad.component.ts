@@ -43,6 +43,7 @@ export class MantenedorEntidadComponent implements OnInit {
     this.listaRegiones=[];
     this.cargarContratos();
     this.miContratante = {
+      Id:'0',
       RazonSocial: '',
       TipoContrato: '',
       TipoContratante: '0',
@@ -61,6 +62,7 @@ export class MantenedorEntidadComponent implements OnInit {
   }
   cargarForma(){
     this.forma = new FormGroup({
+      'nuevoEcolId': new FormControl(),
       'nuevoEmpleador': new FormControl('', [Validators.required,
                                           Validators.minLength(3)]),
       'nuevoTipoContrato': new FormControl('', Validators.required),
@@ -76,15 +78,15 @@ export class MantenedorEntidadComponent implements OnInit {
   }
   cargarContratos(){
     var nombrada = {
-      Nombre: 'Licencia Nombrada',
+      Nombre: 'Licencia de Usuario Nombrado',
       Id: 0
     };
     var reutilizable = {
-      Nombre: 'Licencia Reutilizable',
+      Nombre: 'Licencia Reasignada',
       Id: 1
     };
     var onDemand = {
-      Nombre: 'Licencia On Demand',
+      Nombre: 'Licencia Concurrente',
       Id: 2
     };
 
@@ -155,7 +157,7 @@ export class MantenedorEntidadComponent implements OnInit {
               }
             },
             "lengthMenu": [ 10, 15, 20, 50, 100],
-            "searching": false,
+            "searching": true,
             "info": false,
             select: true,
             responsive: true,
@@ -240,6 +242,7 @@ export class MantenedorEntidadComponent implements OnInit {
     this.obtenerComunas(String(regId));
 
     this.forma.setValue({
+      nuevoEcolId: this.miContratante.Id,
       nuevoEmpleador: this.miContratante.RazonSocial,
       nuevoTipoContrato: this.miContratante.TipoContratante,
       nuevoUsuarioRegion: this.miContratante.IdRegion,
@@ -263,6 +266,7 @@ export class MantenedorEntidadComponent implements OnInit {
       var numero = this.forma.value.nuevoUsuarioNumeroDireccion;
       var sobrecupo = this.forma.value.nuevoUsuarioSobrecupo;
       var totalLicencias = this.forma.value.nuevoUsuarioTotalLicencias;
+      var idEcol = this.forma.value.nuevoEcolId;
 
       //empezamos el loading
       this.loading = true;
@@ -271,7 +275,7 @@ export class MantenedorEntidadComponent implements OnInit {
         idTipoContrato,
         idRegion,
         idComuna,
-        this.ecolId,
+        String(idEcol),
         direccion,
         numero,
         restoDireccion,
@@ -289,10 +293,12 @@ export class MantenedorEntidadComponent implements OnInit {
               console.log(usuarioCambiado.Mensaje);
               //actualizamos la lista
               //this.obtenerListaUsuarios(this.usuario.AutentificacionUsuario.EcolId.toString(), this.usuario.AutentificacionUsuario.RolId.toString());
+              this.destroyTable();
               this.cargaInicial();
               this.loading = false;
               this.showToast('success', 'Modificado con éxito', 'Modificación');  
                 //cerrar modal
+
               $("#modalEditarContratante").modal("hide");
               
               
@@ -331,6 +337,64 @@ export class MantenedorEntidadComponent implements OnInit {
       this.showToast('error', 'Revise campos', 'Requeridos');
     }
   }
+  destroyTable(){
+    $('#tablaUserWeb').DataTable().destroy();
+  };
+  editarContratante(contratante, accion){
+    this.cargarContratos();
+    var regId = contratante.IdRegion;
+    this.obtenerComunas(String(regId));
+    this.forma.setValue({
+      nuevoEcolId: contratante.Id,
+      nuevoEmpleador: contratante.RazonSocial,
+      nuevoTipoContrato: contratante.TipoContratante,
+      nuevoUsuarioRegion: contratante.IdRegion,
+      nuevoUsuarioComuna: contratante.IdComuna,
+      nuevoUsuarioDireccion: contratante.Direccion,
+      nuevoUsuarioRestoDireccion: contratante.RestoDireccion,
+      nuevoUsuarioNumeroDireccion: contratante.Numero,
+      nuevoUsuarioSobrecupo: contratante.RebalseLun.Sobrecupo,
+      nuevoUsuarioTotalLicencias: contratante.RebalseLun.TotalLicenciasInicial
+    });
+
+    if (accion != 'editar'){
+      this.soloLectura();
+    }
+    else {
+      this.activar();
+    }
+  }
+
+  soloLectura(){
+          //bloquear todo
+          $("#inputEmpleador").attr("disabled", "disabled"); 
+          $("#inputTipoContrato").attr("disabled", "disabled"); 
+          $("#inputRegion1").attr("disabled", "disabled"); 
+          $("#inputComuna").attr("disabled", "disabled"); 
+          $("#inputDireccion").attr("disabled", "disabled"); 
+          $("#inputNumeroDireccion").attr("disabled", "disabled"); 
+          $("#inputRestoDireccion").attr("disabled", "disabled"); 
+          $("#inputSobrecupo").attr("disabled", "disabled"); 
+          $("#inputTotalLicencias").attr("disabled", "disabled"); 
+          //$("#btnGuardar").attr("visibility", "hidden"); 
+          $("#exampleModalLabel").text("Información");
+          $("#btnGuardar").hide();
+  }
+  activar(){
+    //bloquear todo
+    $("#inputEmpleador").attr("disabled", false); 
+    $("#inputTipoContrato").attr("disabled", false); 
+    $("#inputRegion1").attr("disabled", false); 
+    $("#inputComuna").attr("disabled", false); 
+    $("#inputDireccion").attr("disabled", false); 
+    $("#inputNumeroDireccion").attr("disabled", false); 
+    $("#inputRestoDireccion").attr("disabled", false); 
+    $("#inputSobrecupo").attr("disabled", false); 
+    $("#inputTotalLicencias").attr("disabled", false); 
+    //$("#btnGuardar").attr("visibility", "hidden"); 
+    $("#exampleModalLabel").text("Editar");
+    $("#btnGuardar").show();
+}
 
   showToast(tipo, mensaje, titulo){
     if (tipo == 'success'){
