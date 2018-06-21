@@ -1,6 +1,6 @@
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<div class="container mt-4">
-  <div class="row ">
+<div class="container mt-4 pb-5">
+  <div class="row mb-2 ml-1">
       <div class="col">
         <div class="form-inline justify-content-between">
             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalCrearUsuario" (click)="modalCrearUsuario()"><i class="fas fa-user-plus"></i> Crear Usuario</button>
@@ -8,7 +8,7 @@
       </div>
   </div>
   <div *ngIf="users != 0">
-    <table id="tablaUserWeb" class="display table table-hover pb-5 compact order-column" style="width:100%">
+    <table id="tablaUserWeb" class="display table table-hover pb-8 compact order-column mt-1 mb-2" style="width:100%">
         <tbody *ngIf="users">
             <tr *ngFor="let p of users">
                 <td>{{p.Rut}}</td>
@@ -18,9 +18,9 @@
                 <td>{{p.Estamento}}</td>
                 <td>{{p.RolesUsuarios[0]}}</td>
                 <td>
-                  <i class="fas fa-user-edit fa-lg iconos_editar" data-toggle="modal" data-target="#modalCrearUsuario" data-placement="bottom" title="Editar usuario" (click)="editarUsuario(p, 'editar')"  style="cursor: pointer;"></i>
-                  <i class="fas fa-eye fa-lg iconos_editar"  data-toggle="modal" data-target="#modalCrearUsuario" data-placement="bottom" title="Ver usuario" (click)="editarUsuario(p, 'ver')" style="cursor: pointer;"></i>
-                  <a  ngConfirm [title]="title" [message]="message" [options]="options" (onConfirm)="confirmed(p)" (onCancel)="cancelled()"><i class="far fa-trash-alt fa-lg iconos_editar"  data-placement="bottom" title="Eliminar usuario"  style="cursor: pointer;"></i></a>
+                  <i class="fas fa-user-edit fa-sm iconos_editar" data-toggle="modal" data-target="#modalCrearUsuario" data-placement="bottom" title="Editar usuario" (click)="editarUsuario(p, 'editar')"  style="cursor: pointer;"></i>
+                  <i class="fas fa-eye fa-sm iconos_editar"  data-toggle="modal" data-target="#modalCrearUsuario" data-placement="bottom" title="Ver usuario" (click)="editarUsuario(p, 'ver')" style="cursor: pointer;"></i>
+                  <a  ngConfirm [title]="title" [message]="message" [options]="options" (onConfirm)="confirmed(p)" (onCancel)="cancelled()"><i class="far fa-trash-alt fa-sm iconos_editar"  data-placement="bottom" title="Eliminar usuario"  style="cursor: pointer;"></i></a>
                 </td>
             </tr> 
         </tbody>
@@ -44,39 +44,41 @@
             <form [formGroup]="forma" (ngSubmit)="guardarUsuario()">
               <div class="form-row mb-2">
                   <div class="input-group-sm col-md-6">
-                      <label for="inputNombreUsuario">Nombre de usuario</label>
+                      <label for="inputNombreUsuario">Nombre de usuario*</label>
                       <input type="text" class="form-control" id="inputNombreUsuario" placeholder="Usuario" formControlName="nuevoUsuario">
                   </div>
                   <div class="input-group-sm col-md-6">
-                    <label for="inputRun">RUN</label>
+                    <label for="inputRun">RUN*</label>
                     <input type="text" class="form-control" id="inputRun" [(ngModel)]="rutUsuario" (blur)="formatoRut()" name="rut" maxlength="9" placeholder="ej: 123456789" formControlName="nuevoUsuarioRun" >
                 </div>
               </div>
-              <div class="form-row mb-2">
-                  <div class="input-group-sm col-md-5">
-                      <label for="inputEntidad">Entidad contratante</label>
+              <div class="form-row mb-2 align-items-center">
+                  <div class="input-group-sm col-md-6">
+                      <label for="inputEntidad">Entidad contratante*</label>
                       <select class="custom-select" class="form-control" id="inputEntidad" formControlName="nuevoUsuarioEntidad">
                       <option id="optContratante"  *ngFor="let v of listaContratantes;" [value]="v.Id">{{v.RazonSocial}}</option>
                       </select>
                   </div>
                   <div class="input-group-sm col-md-4">
-                      <label for="inputRol">Rol del usuario</label>
+                      <label for="inputRol">Rol del usuario*</label>
                       <select class="custom-select" class="form-control" id="inputRol" formControlName="nuevoUsuarioRol">
                       <option  *ngFor="let r of listaRoles;" [value]="r">{{r}}</option>
                       </select>
                   </div>
-                  <div class="form-check-sm col-md-3 puedeVer">
+                  <div class="col-md-2 mt-3">
+                    <div class="form-check">
                       <input class="form-check-input" type="checkbox" id="inputReporte" formControlName="nuevoVerReporte">
                       <label class="form-check-label" for="inputReporte">Ver reportes</label>
+                    </div>   
                   </div>
               </div>
               <div class="form-row mb-2">
                 <div class="input-group-sm col-md-4">
-                  <label for="inputNombre">Nombre</label>
+                  <label for="inputNombre">Nombre*</label>
                   <input  type="text" class="form-control" id="inputNombre" placeholder="Nombre" formControlName="nuevoUsuarioNombre">
                 </div>
                 <div class="input-group-sm col-md-4">
-                  <label for="inputApellidoPaterno">Apellido paterno</label>
+                  <label for="inputApellidoPaterno">Apellido paterno*</label>
                   <input  type="text" class="form-control" id="inputApellidoPaterno" placeholder="Apellido paterno" formControlName="nuevoUsuarioApellidoPat">
                 </div>
                 <div class="input-group-sm col-md-4">
@@ -86,13 +88,13 @@
               </div>
               <div class="form-row mb-2">
                   <div class="input-group-sm col-md-6">
-                      <label for="inputRegion1">Región</label>
+                      <label for="inputRegion1">Región*</label>
                       <select (change)="onChangeRegion($event)" class="custom-select" class="form-control" id="inputRegion1" formControlName="nuevoUsuarioRegion">
                       <option  *ngFor="let v of listaRegiones;" [value]="v.Id">{{v.Nombre}}</option>
                       </select>
                   </div>
                   <div class="input-group-sm col-md-6">
-                      <label for="inputComuna">Comuna</label>
+                      <label for="inputComuna">Comuna*</label>
                       <select class="custom-select" class="form-control" id="inputComuna" formControlName="nuevoUsuarioComuna">
                       <option  *ngFor="let r of listaComunas;" [value]="r.Id">{{r.Nombre}}</option>
                       </select>
@@ -100,11 +102,11 @@
               </div>
               <div class="form-row mb-2">
                       <div class="input-group-sm col-md-6">
-                          <label for="inputDireccion">Nombre Vía</label>
+                          <label for="inputDireccion">Nombre Vía*</label>
                           <input type="text" class="form-control" id="inputDireccion" placeholder="Nombre vía" formControlName="nuevoUsuarioDireccion">
                       </div>
                       <div class="input-group-sm col-md-6">
-                          <label for="inputRestoDireccion">Resto dirección</label>
+                          <label for="inputRestoDireccion">Resto dirección*</label>
                           <input type="text" class="form-control" id="inputRestoDireccion" placeholder="Resto de la dirección" formControlName="nuevoUsuarioRestoDireccion">
                       </div>
                   </div>
@@ -114,7 +116,7 @@
                   <input type="tel" class="form-control" id="telefono1" placeholder="Teléfono fijo" maxlength="9" formControlName="nuevoUsuarioTelefonoFijo">
                 </div>
                 <div class="input-group-sm col-md-6">
-                  <label for="telefono2">Teléfono Celular</label>
+                  <label for="telefono2">Teléfono Celular*</label>
                   <input type="tel" class="form-control" id="telefono2" placeholder="Teléfono celular" maxlength="9" formControlName="nuevoUsuarioTelefonoCelular">
                 </div>
               </div>
@@ -130,10 +132,10 @@
                       </select>
                   </div>
               </div>
-              <div class="text-center alert-success p-1" *ngIf="tipoDeAccion == 'Editar'" id="lblInfoPass3">
+              <div class="text-center alert-success p-1 mt-3 mb-2" *ngIf="tipoDeAccion == 'Editar'" id="lblInfoPass3">
                 Si no desea cambiar la contraseña del usuario deje estos campos vacios.
               </div>
-              <div class="text-center alert-success p-1" *ngIf="tipoDeAccion == 'Crear'" id="lblInfoPass">
+              <div class="text-center alert-success p-1 mt-3 mb-2" *ngIf="tipoDeAccion == 'Crear'" id="lblInfoPass">
                 La contraseña debe contener al menos 8 caracteres, una mayúscula, números y letras.
               </div>
               <div class="form-row mb-2" id="lblInfoPass2">

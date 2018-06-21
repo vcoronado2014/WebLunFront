@@ -19,6 +19,7 @@ body {
     position: relative;
     margin: 0;
     padding-top: 70px;
+    padding-bottom: 70px;
     min-height: 100%;
 }
 
@@ -29,16 +30,24 @@ body {
 }
 
 footer{
-    padding: 10px;
-    color: #fff;
+    padding: 15px;
+    color: #78C2AD;
     position: absolute;
     bottom: 0;
     width: 100%;
-    font-size: .8rem;
+    background-color: #2f4c44;
 }
 footer p{
-    margin: 0;
+    margin-bottom: -.2rem;
+    font-size: .8rem;
 }
+footer .pie{
+    display: inline;
+}
+footer .pie i{
+    font-size: 1.6rem;
+}
+
 /* Pagination */
 .paginate_button:hover {
     color: white !important;
@@ -109,7 +118,7 @@ table.dataTable.no-footer {
 }
 /* boton guardar */
 .btn_naranja{
-    background-color: #F28B26;
+    background-color: #FF7851;
     color: #fff;
 }
 table.dataTable thead th{

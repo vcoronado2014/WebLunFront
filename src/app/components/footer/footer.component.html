@@ -1,9 +1,17 @@
-<footer class="footer bg-primary text-center">
+<footer class="footer">
   <div class="container">
     <div class="row">
-      <div class="col-sm-12">
-        Direccion : {{direccion}}        
+      <div class="col-md-4 pie">
+        <p>{{direccion}}</p>
+        <p>{{telefono}}</p>       
+      </div>
+      <div class="col-md-4 text-center">
+          <a href="{{web}}"><img src="/assets/logo_RayenSalud.png" alt="logo Rayen Salud" height="35"></a>
+      </div>
+      <div class="col-md-4 pie text-right align-middle">
+          <a href="{{facebook}}"><i class="fab fa-facebook-square fa-lg align-middle"></i></a> <a href="{{twitter}}"><i class="fab fa-twitter-square fa-lg  align-middle"></i></a> <a [href]="'mailto:'+contacto"><i class="fas fa-envelope-square fa-lg align-middle"></i></a> 
       </div>
     </div>
+    
   </div>
 </footer>

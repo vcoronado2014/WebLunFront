@@ -231,7 +231,7 @@ export class EditarUsuariosComponent implements OnInit {
          esNuevo = 'True'
          nombreUser = 0;
         if(expreg.test(password) != true){
-          this.showToast('error', 'la contraseña debe ser segura', 'Error');
+          this.showToast('error', 'La contraseña debe ser segura', 'Error');
           return;
         }
         if(password != password2){
@@ -251,7 +251,7 @@ export class EditarUsuariosComponent implements OnInit {
         esNuevo = 'False'
         if(password){
           if(expreg.test(password) != true){
-            this.showToast('error', 'la contraseña debe ser segura', 'Error');
+            this.showToast('error', 'La contraseña debe ser segura', 'Error');
             return;
           }
           if(password != password2){
@@ -534,8 +534,8 @@ activar(titulo){
      modalSize: 'lg',      							 //DEFAULT VALUE
      modalClass: ''      								//DEFAULT VALUE
     }
-    message:any = 'Al eliminar este usuario no podrá volver a ingresar'
-    title:any = '¿Estas seguro de eliminar a este usuario'
+    message:any = 'Al eliminar este usuario no podrá volver a ingresar.';
+    title:any = '¿Estas seguro de eliminar a este usuario?';
  
   confirmed(usuario) {
     console.log(usuario.Nombres +' eliminado');
@@ -578,19 +578,7 @@ activar(titulo){
   cancelled() {
    console.log('cancelled');
   }
- 
-  deleteUser(usuario){
-    if(window.confirm('¿Estas seguro de eliminar a '+ usuario.Nombres)){
-
-    }
-  }
- 
-
-
-  viewUser(usuario){
-    console.log(usuario);
-  }
-  onChangeRegion(event){
+   onChangeRegion(event){
     console.log(event.target.value);
     this.obtenerComunas(event.target.value);
   }
