@@ -399,7 +399,7 @@ export class EditarUsuariosComponent implements OnInit {
 
   obtenerEntidadesContratantes(ecolId){
     //indicador valor
-    this.global.postEntidadesContratantes(ecolId.toString()).subscribe(
+    this.global.postEntidadesContratantes(ecolId.toString(), this.token, this.usuario).subscribe(
         data => {
           if (data){
             var listaEntidadesContratantesR = data.json();

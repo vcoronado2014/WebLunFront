@@ -40,10 +40,12 @@ export class GlobalService {
 
    }
    //necesita token 
-   postEntidadesContratantes(ecolId){
+   postEntidadesContratantes(ecolId,token, nombreUsuario){
     let url = environment.API_ENDPOINT + 'EntidadContratante';
     let dataGet = {
-       EcolId: ecolId 
+       EcolId: ecolId,
+       Token: token,
+       NombreUsuario: nombreUsuario 
       };
 
       let data = this.http.post(url, dataGet, {
@@ -52,7 +54,7 @@ export class GlobalService {
       return data;
 
    }
-   // necesita token 
+   // necesita token NOOOOOOOOOOOOOOOOOOOO
    gettEntidadContratante(ecolId){
     let url = environment.API_ENDPOINT + 'EntidadContratante?ecolId=' + ecolId;
     let data = this.http.get(url).map(data => data.json());
@@ -60,7 +62,7 @@ export class GlobalService {
 
    }
    //necesita token
-  putEntidadContratante(empleador, idTipoContrato, idRegion, idComuna, ecolId, direccion, numero, restoDireccion, sobrecupo, totalLicencias) {
+  putEntidadContratante(empleador, idTipoContrato, idRegion, idComuna, ecolId, direccion, numero, restoDireccion, sobrecupo, totalLicencias, token, nombreUsuario) {
     let url = environment.API_ENDPOINT + 'EntidadContratante';
     let dataGet = {
       Empleador: empleador,
@@ -72,7 +74,9 @@ export class GlobalService {
       Numero: numero,
       RestoDireccion: restoDireccion,
       Sobrecupo: sobrecupo.toString(),
-      TotalLicencias: totalLicencias.toString()
+      TotalLicencias: totalLicencias.toString(),
+      Token: token,
+      NombreUsuario: nombreUsuario
     };
 
     let data = this.http.put(url, dataGet, {

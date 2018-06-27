@@ -29,6 +29,8 @@ export class MantenedorEntidadComponent implements OnInit {
   listaComunas;
   rolUsuario = sessionStorage.getItem('Rol');
   ecolId = sessionStorage.getItem("Ecol");
+  tokenEnviar = sessionStorage.getItem("token");
+  nombreUsuario = sessionStorage.getItem("UserName");
   constructor
   (
     private fb: FormBuilder,
@@ -119,7 +121,7 @@ export class MantenedorEntidadComponent implements OnInit {
   }
   LoadTable(){
     this.loading = true; 
-    this.global.postEntidadesContratantes(String(this.ecolId)).subscribe(
+    this.global.postEntidadesContratantes(String(this.ecolId), this.tokenEnviar,this.nombreUsuario ).subscribe(
       data => {
         var datosR = data.json();
         this.entidadesContratantes = datosR.Datos; 
@@ -267,6 +269,9 @@ export class MantenedorEntidadComponent implements OnInit {
       var sobrecupo = this.forma.value.nuevoUsuarioSobrecupo;
       var totalLicencias = this.forma.value.nuevoUsuarioTotalLicencias;
       var idEcol = this.forma.value.nuevoEcolId;
+      //parametros para validar el token
+      var tokenEnviar = sessionStorage.getItem("token");
+      var nombreUsuario = sessionStorage.getItem("UserName");
 
       //empezamos el loading
       this.loading = true;
@@ -280,7 +285,9 @@ export class MantenedorEntidadComponent implements OnInit {
         numero,
         restoDireccion,
         sobrecupo,
-        totalLicencias
+        totalLicencias,
+        tokenEnviar,
+        nombreUsuario
       ).subscribe(
         data => {
           

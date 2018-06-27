@@ -5,7 +5,7 @@
 
 export const environment = {
   production: false,
-  API_ENDPOINT: 'http://172.16.3.91/RayenSalud.WebLun.Api/api/',
+  API_ENDPOINT: 'http://localhost:50505/api/',
   DIRECCION: 'Merced 480 Piso 2, Santiago - Chile',
   TELEFONO:'(+56 2) 2588 8800',
   CONTACTO:'contacto@rayensalud.com',
