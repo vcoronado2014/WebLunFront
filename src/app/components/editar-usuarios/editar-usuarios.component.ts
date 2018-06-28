@@ -103,13 +103,13 @@ export class EditarUsuariosComponent implements OnInit {
         $(function(){
           this.table = $('#tablaUserWeb').DataTable({
             columns: [
-                { title: "Run", className:'text-center' },
-                { title: "Nombre Usuario", className:'text-center' },
-                { title: "Nombre Completo", className:'text-center' },
-                { title: "Región", className:'text-center' },
-                { title: "Estamento", className:'text-center'},
-                { title: "Rol", className:'text-center' },
-                { title: "Opciones", className:'text-center'}
+                { title: "Run", className:'text-center ' },
+                { title: "Nombre Usuario", className:'text-center ' },
+                { title: "Nombre Completo", className:'text-center ' },
+                { title: "Región", className:'text-center ' },
+                { title: "Estamento", className:'text-center '},
+                { title: "Rol", className:'text-center ' },
+                { title: "Opciones", className:'text-center '}
             ],
             "language": {
               "sProcessing":     "Procesando...",
@@ -135,7 +135,7 @@ export class EditarUsuariosComponent implements OnInit {
                   "sSortDescending": ": Activar para ordenar la columna de manera descendente"
               }
             },
-            "lengthMenu": [ 10, 15, 20, 50, 100],
+            "lengthMenu": [10,15,20,50,100],
             "info": false,
             select: true,
             responsive: true,
@@ -143,7 +143,8 @@ export class EditarUsuariosComponent implements OnInit {
             dom: 'Blfrtip',
             buttons: [
                 {
-                  extend: 'excelHtml5', 
+                  extend: 'excelHtml5',
+                  orientation: 'landscape', 
                   className:'excelBtn',
                   text: 'Excel',
                   title:'Registro de usuarios',
@@ -151,21 +152,26 @@ export class EditarUsuariosComponent implements OnInit {
                     modifier: {
                         page: 'current',   
                     },
-                  columns: [0, 1, 2, 3, 4,5]
+                  columns: [0,1,2,3,4,5]
                 }
               },
               {
-                extend: 'pdfHtml5', 
+                extend: 'pdfHtml5',
                 text: 'Pdf',
                 title:'Registro de usuarios Web Lun',
                 exportOptions: {
                   modifier: {
                       page: 'current',   
                   },
-                columns: [0, 1, 2, 3, 4, 5]
+                columns: [0,1,2,3,4,5]
                 },
                 styles:{
-                  'width':'100%'
+                  'width':'100%',
+                  'td': {
+                    'max-width': '120px',
+                    'white-space': 'nowrap',
+                    'text-overflow': 'ellipsis'
+                  }
                 }
               },
               {
@@ -176,9 +182,9 @@ export class EditarUsuariosComponent implements OnInit {
                 modifier: {
                     page: 'current',   
                 },
-              columns: [0, 1, 2, 3, 4, 5]
+              columns: [0,1,2,3,4,5]
             }
-          }
+            }
             ]
           });
         });       
