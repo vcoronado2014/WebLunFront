@@ -140,6 +140,21 @@ export class EditarUsuariosComponent implements OnInit {
             select: true,
             responsive: true,
             colReorder: true,
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                  extend: 'excelHtml5', 
+                  className:'excelBtn',
+                  text: 'Excel',
+                  exportOptions: {
+                    modifier: {
+                        page: 'current',
+                        columns: [ 0, 1, 2, 3, 4, 5 ]
+                    }
+                }
+              },
+              'colvis'
+            ]
           });
         });       
         console.log(this.users);

@@ -125,3 +125,7 @@ table.dataTable thead th{
     background-color:#78C2AD;
     color:#ffff;
 }
+/* boton exportar excel */
+.excelBtn{
+    display: inline-flex !important;
+}
