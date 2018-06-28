@@ -28,6 +28,9 @@ body {
     padding-top: 0 !important;
     padding-bottom: 0 !important;
 }
+.icon_navBar{
+    cursor:pointer;
+}
 
 footer{
     padding: 15px;
@@ -110,6 +113,10 @@ table.dataTable.no-footer {
     display: inline-flex !important;
     margin-bottom: 0.5rem;
 }
+#tablaUserWeb_length label select {
+    margin-right: 0.5rem;
+    margin-left: 0.5rem;
+}
 /* check report */
 .puedeVer{
     position: fixed;
@@ -126,6 +133,9 @@ table.dataTable thead th{
     color:#ffff;
 }
 /* boton exportar excel */
-.excelBtn{
+div.dt-buttons.btn-group{
     display: inline-flex !important;
+    float: right;
+    margin-top: -0.25rem;
+    margin-left: 0.5rem;
 }

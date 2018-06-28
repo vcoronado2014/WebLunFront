@@ -103,13 +103,13 @@ export class EditarUsuariosComponent implements OnInit {
         $(function(){
           this.table = $('#tablaUserWeb').DataTable({
             columns: [
-                { title: "Run" },
-                { title: "Nombre Usuario" },
-                { title: "Nombre Completo" },
-                { title: "Región" },
-                { title: "Estamento" },
-                { title: "Rol" },
-                { title: "Opciones"}
+                { title: "Run", className:'text-center' },
+                { title: "Nombre Usuario", className:'text-center' },
+                { title: "Nombre Completo", className:'text-center' },
+                { title: "Región", className:'text-center' },
+                { title: "Estamento", className:'text-center'},
+                { title: "Rol", className:'text-center' },
+                { title: "Opciones", className:'text-center'}
             ],
             "language": {
               "sProcessing":     "Procesando...",
@@ -140,20 +140,45 @@ export class EditarUsuariosComponent implements OnInit {
             select: true,
             responsive: true,
             colReorder: true,
-            dom: 'Bfrtip',
+            dom: 'Blfrtip',
             buttons: [
                 {
                   extend: 'excelHtml5', 
                   className:'excelBtn',
                   text: 'Excel',
+                  title:'Registro de usuarios',
                   exportOptions: {
                     modifier: {
-                        page: 'current',
-                        columns: [ 0, 1, 2, 3, 4, 5 ]
-                    }
+                        page: 'current',   
+                    },
+                  columns: [0, 1, 2, 3, 4,5]
                 }
               },
-              'colvis'
+              {
+                extend: 'pdfHtml5', 
+                text: 'Pdf',
+                title:'Registro de usuarios Web Lun',
+                exportOptions: {
+                  modifier: {
+                      page: 'current',   
+                  },
+                columns: [0, 1, 2, 3, 4, 5]
+                },
+                styles:{
+                  'width':'100%'
+                }
+              },
+              {
+              extend: 'print', 
+              text: 'Imprimir',
+              title:'Registro de usuarios Web Lun',
+              exportOptions: {
+                modifier: {
+                    page: 'current',   
+                },
+              columns: [0, 1, 2, 3, 4, 5]
+            }
+          }
             ]
           });
         });       
