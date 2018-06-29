@@ -70,7 +70,7 @@ export class LoginComponent implements OnInit {
       () => {
         this.rol = sessionStorage.getItem("Rol");
          if(this.isLogged == true){
-             if( this.rol == this.roles.adminWeb || this.roles.superAdmin){
+             if( this.rol == this.roles.adminWeb || this.rol == this.roles.superAdmin){
                 //correcto
                 console.log('Correcto administrador web');
                 this.router.navigateByUrl('/administracion-web')
